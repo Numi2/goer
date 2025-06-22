@@ -31,6 +31,9 @@
 		46F671C12BD1B31600671A17 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C02BD1B31600671A17 /* ControlsView.swift */; };
 		46F671C32BD1B4DE00671A17 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C22BD1B4DE00671A17 /* SummaryView.swift */; };
 		46F671C72BD1B83800671A17 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C62BD1B83800671A17 /* WorkoutManager.swift */; };
+		F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
+		F45696192E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
+		F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +90,8 @@
 		46F671C92BD1BC8C00671A17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0DA57652D9C81AA00226FEC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E0DA57672D9C81AA00226FEC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassBackground.swift; sourceTree = "<group>"; };
+		F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -180,6 +185,7 @@
 				46E310792DB1C5C900D144A1 /* Intent */,
 				46E3107A2DB1C8AE00D144A1 /* Views */,
 				466C4B4F2BC6020A00B2ECF8 /* Preview Content */,
+				F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */,
 			);
 			path = WorkoutsOniOSSampleApp;
 			sourceTree = "<group>";
@@ -216,6 +222,7 @@
 		46E310AA2DB31A7000D144A1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */,
 				46E310AB2DB31AC200D144A1 /* MetricsModel.swift */,
 				46F671BE2BD1B10F00671A17 /* ElapsedTimeView.swift */,
 			);
@@ -302,7 +309,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 466C4B412BC6020800B2ECF8 /* Build configuration list for PBXProject "goer" */;
+			buildConfigurationList = 466C4B412BC6020800B2ECF8 /* Build configuration list for PBXProject "WorkoutsOniOSSampleApp" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -345,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45696192E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */,
 				4634012E2DC91D9400CBE4F8 /* CountDownView.swift in Sources */,
 				466C4B4C2BC6020800B2ECF8 /* StartView.swift in Sources */,
 				46F671C32BD1B4DE00671A17 /* SummaryView.swift in Sources */,
@@ -353,6 +361,7 @@
 				46F671B92BD1AE9000671A17 /* MetricsView.swift in Sources */,
 				1DAEFFDB2C82435400D25C26 /* HKWorkout+HKWorkoutConfiguration.swift in Sources */,
 				1DAEFFB02C7E4B6E00D25C26 /* NavigationModel.swift in Sources */,
+				F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */,
 				46E310AC2DB31AC300D144A1 /* MetricsModel.swift in Sources */,
 				4698F4132D9E0109003F2CBB /* WorkoutsOniOSSampleAppSceneDelegate.swift in Sources */,
 				4698F4112D9DFFEC003F2CBB /* WorkoutsOniOSSampleAppDelegate.swift in Sources */,
@@ -370,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46E310A92DB2E68200D144A1 /* ElapsedTimeView.swift in Sources */,
+				F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */,
 				46E310AD2DB31AC300D144A1 /* MetricsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,7 +685,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		466C4B412BC6020800B2ECF8 /* Build configuration list for PBXProject "goer" */ = {
+		466C4B412BC6020800B2ECF8 /* Build configuration list for PBXProject "WorkoutsOniOSSampleApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				466C4B682BC6020A00B2ECF8 /* Debug */,
