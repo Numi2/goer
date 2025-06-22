@@ -6,22 +6,6 @@
 
 import SwiftUI
 
-// MARK: - Simple Glass Button Style
-
-/// A clean button style that uses system materials following Apple's guidelines
-public struct GlassButtonStyle: ButtonStyle {
-    public init() {}
-    
-    public func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
-
 // MARK: - Clean Extensions
 
 extension View {
@@ -61,10 +45,6 @@ extension View {
 }
 
 // MARK: - Supporting Types (for compatibility)
-
-enum LiquidGlassVariant {
-    case regular, clear
-}
 
 enum LiquidGlassIntensity {
     case light, medium, heavy
