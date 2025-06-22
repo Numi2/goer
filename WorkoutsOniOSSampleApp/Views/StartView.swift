@@ -36,7 +36,7 @@ struct StartView: View {
             }
         }
         .navigationTitle("")
-        .navigationBarHidden(true)
+       
         .onAppear {
             workoutManager.requestAuthorization()
             startCardAnimations()
@@ -81,18 +81,13 @@ struct StartView: View {
             ForEach(Array(WorkoutTypes.workoutConfigurations.enumerated()), id: \.element) { index, configuration in
                 WorkoutCard(
                     configuration: configuration,
-                    isSelected: selectedWorkout == configuration,
-                    animationDelay: Double(index) * 0.1
+                    isSelected: selectedWorkout == configuration
                 ) {
                     selectWorkout(configuration)
                 }
                 .scaleEffect(animateCards ? 1.0 : 0.8)
                 .opacity(animateCards ? 1.0 : 0.0)
-                .animation(
-                    .interpolatingSpring(stiffness: 200, damping: 15)
-                    .delay(Double(index) * 0.1),
-                    value: animateCards
-                )
+                
             }
         }
     }
@@ -141,7 +136,7 @@ struct StartView: View {
     
     private func startCardAnimations() {
         withAnimation {
-            animateCards = true
+            animateCards = false
         }
     }
 }
@@ -150,7 +145,7 @@ struct StartView: View {
 private struct WorkoutCard: View {
     let configuration: HKWorkoutConfiguration
     let isSelected: Bool
-    let animationDelay: Double
+
     let onTap: () -> Void
     
     @State private var isHovered = false
@@ -188,8 +183,7 @@ private struct WorkoutCard: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .rotationEffect(.degrees(rotationAngle))
-                        .scaleEffect(isSelected ? 1.1 : 1.0)
+                       
                 }
                 
                 // Workout name
@@ -226,17 +220,9 @@ private struct WorkoutCard: View {
             tint: workoutColor,
             variant: isSelected ? .regular : .clear,
             intensity: isSelected ? .heavy : .medium,
-            enableMotionEffects: true
+      
         )
-        .scaleEffect(isSelected ? 1.05 : (isHovered ? 1.02 : 1.0))
-        .animation(.interpolatingSpring(stiffness: 300, damping: 20), value: isSelected)
-        .animation(.easeInOut(duration: 0.2), value: isHovered)
-        .onHover { hovering in
-            isHovered = hovering
-        }
-        .onAppear {
-            startIconRotation()
-        }
+      
         .overlay {
             if isSelected {
                 // Selection indicator
@@ -278,13 +264,9 @@ private struct WorkoutCard: View {
         default: return "Flexible"
         }
     }
-    
-    private func startIconRotation() {
-        withAnimation(.linear(duration: 10.0).repeatForever(autoreverses: false)) {
-            rotationAngle = 360
-        }
+
     }
-}
+
 
 #Preview {
     NavigationStack {

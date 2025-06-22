@@ -31,6 +31,8 @@
 		46F671C12BD1B31600671A17 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C02BD1B31600671A17 /* ControlsView.swift */; };
 		46F671C32BD1B4DE00671A17 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C22BD1B4DE00671A17 /* SummaryView.swift */; };
 		46F671C72BD1B83800671A17 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C62BD1B83800671A17 /* WorkoutManager.swift */; };
+		F417A7082E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */; };
+		F417A7092E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */; };
 		F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
 		F45696192E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
 		F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */; };
@@ -90,6 +92,7 @@
 		46F671C92BD1BC8C00671A17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0DA57652D9C81AA00226FEC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E0DA57672D9C81AA00226FEC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassEffectContainer.swift; sourceTree = "<group>"; };
 		F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassBackground.swift; sourceTree = "<group>"; };
 		F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -222,6 +225,7 @@
 		46E310AA2DB31A7000D144A1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */,
 				F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */,
 				46E310AB2DB31AC200D144A1 /* MetricsModel.swift */,
 				46F671BE2BD1B10F00671A17 /* ElapsedTimeView.swift */,
@@ -359,6 +363,7 @@
 				466C4B4A2BC6020800B2ECF8 /* WorkoutsOniOSSampleApp.swift in Sources */,
 				46F671BF2BD1B10F00671A17 /* ElapsedTimeView.swift in Sources */,
 				46F671B92BD1AE9000671A17 /* MetricsView.swift in Sources */,
+				F417A7082E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */,
 				1DAEFFDB2C82435400D25C26 /* HKWorkout+HKWorkoutConfiguration.swift in Sources */,
 				1DAEFFB02C7E4B6E00D25C26 /* NavigationModel.swift in Sources */,
 				F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */,
@@ -381,6 +386,7 @@
 				46E310A92DB2E68200D144A1 /* ElapsedTimeView.swift in Sources */,
 				F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */,
 				46E310AD2DB31AC300D144A1 /* MetricsModel.swift in Sources */,
+				F417A7092E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

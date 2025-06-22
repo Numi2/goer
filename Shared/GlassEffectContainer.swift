@@ -5,9 +5,9 @@ import SwiftUI
 /// A structure that defines the glass effect properties
 @MainActor
 public struct Glass: Sendable {
-    private var isInteractive: Bool = false
-    private var tint: Color = .clear
-    private var intensity: Double = 1.0
+    var isInteractive: Bool = false
+    var tint: Color = .clear
+    var intensity: Double = 1.0
     
     /// Creates a default glass effect
     public init() {}
@@ -226,7 +226,7 @@ private struct GlassEffectView<S: Shape>: View {
             }
             .overlay {
                 shape
-                    .strokeBorder(
+                    .stroke(
                         LinearGradient(
                             colors: [
                                 Color.white.opacity(0.6),
@@ -300,14 +300,18 @@ private struct GlassButtonBackground: View {
 
 // MARK: - Shape Preference Key
 
-private struct GlassShapeInfo: Identifiable {
+private struct GlassShapeInfo: Identifiable, Equatable, Sendable {
     let id: UUID
     let shape: AnyShape
     let glass: Glass
+    
+    static func == (lhs: GlassShapeInfo, rhs: GlassShapeInfo) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 private struct GlassShapePreferenceKey: PreferenceKey {
-    static var defaultValue: [GlassShapeInfo] = []
+    static let defaultValue: [GlassShapeInfo] = []
     
     static func reduce(value: inout [GlassShapeInfo], nextValue: () -> [GlassShapeInfo]) {
         value.append(contentsOf: nextValue())
@@ -316,8 +320,8 @@ private struct GlassShapePreferenceKey: PreferenceKey {
 
 // MARK: - Type-Erased Shape
 
-private struct AnyShape: Shape {
-    private let _path: (CGRect) -> Path
+private struct AnyShape: Shape, @unchecked Sendable {
+    private let _path: @Sendable (CGRect) -> Path
     
     init<S: Shape>(_ shape: S) {
         _path = { rect in
@@ -329,3 +333,4 @@ private struct AnyShape: Shape {
         _path(rect)
     }
 }
+
