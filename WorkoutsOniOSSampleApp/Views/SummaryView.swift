@@ -27,32 +27,50 @@ struct SummaryView: View {
             loadingView
         } else {
             // Summary content
-            ZStack {
-                // Dynamic background
-                summaryBackground
-                
-                // Main content
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 30) {
-                        // Celebration header
-                        celebrationHeader
-                        
-                        // Workout overview card
-                        workoutOverviewCard
-                        
-                        // Metrics grid
-                        metricsGrid
-                        
-                        // Achievement highlights
-                        achievementHighlights
-                        
-                        // Action buttons
-                        actionButtons
-                        
-                        Spacer(minLength: 60)
+            GlassEffectContainer(spacing: 25) {
+                ZStack {
+                    // Dynamic background
+                    summaryBackground
+                    
+                    // Main content
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 30) {
+                            // Celebration header
+                            celebrationHeader
+                                .glassEffect(
+                                    Glass()
+                                        .tint(.green)
+                                        .intensity(0.6)
+                                        .interactive(true),
+                                    in: RoundedRectangle(cornerRadius: 30, style: .continuous),
+                                    isEnabled: true
+                                )
+                            
+                            // Workout overview card
+                            workoutOverviewCard
+                            
+                            // Metrics grid
+                            metricsGrid
+                            
+                            // Achievement highlights
+                            achievementHighlights
+                                .glassEffect(
+                                    Glass()
+                                        .tint(.purple)
+                                        .intensity(0.5)
+                                        .interactive(true),
+                                    in: RoundedRectangle(cornerRadius: 20, style: .continuous),
+                                    isEnabled: true
+                                )
+                            
+                            // Action buttons
+                            actionButtons
+                            
+                            Spacer(minLength: 60)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 40)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 40)
                 }
             }
             .navigationTitle("")
@@ -96,6 +114,14 @@ struct SummaryView: View {
                 .foregroundColor(.white.opacity(0.7))
                 .multilineTextAlignment(.center)
         }
+        .glassEffect(
+            Glass()
+                .tint(.blue)
+                .intensity(0.7)
+                .interactive(true),
+            in: RoundedRectangle(cornerRadius: 20, style: .continuous),
+            isEnabled: true
+        )
         .advancedLiquidGlassCard(
             tint: .blue,
             variant: .clear,
@@ -345,10 +371,7 @@ struct SummaryView: View {
                 }
                 .foregroundColor(.white)
             }
-            .buttonStyle(.advancedLiquidGlass(
-                tint: .blue,
-                prominence: .standard
-            ))
+            .buttonStyle(GlassButtonStyle())
             
             // Done button
             Button {
@@ -363,10 +386,7 @@ struct SummaryView: View {
                 }
                 .foregroundColor(.white)
             }
-            .buttonStyle(.advancedLiquidGlass(
-                tint: .green,
-                prominence: .prominent
-            ))
+            .buttonStyle(GlassButtonStyle())
         }
         .scaleEffect(animateContent ? 1.0 : 0.9)
         .opacity(animateContent ? 1.0 : 0.0)

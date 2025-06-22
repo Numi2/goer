@@ -14,25 +14,35 @@ struct CountDownView: View {
     @State private var backgroundPulse: Double = 1.0
     
     var body: some View {
-        ZStack {
-            // Dynamic background effects
-            backgroundEffects
-            
-            // Main countdown content
-            VStack(spacing: 60) {
-                // Header section
-                headerSection
+        GlassEffectContainer(spacing: 35) {
+            ZStack {
+                // Dynamic background effects
+                backgroundEffects
                 
-                // Countdown circle
-                countdownCircle
-                
-                // Ready indicator
-                readyIndicator
-                
-                Spacer(minLength: 80)
+                // Main countdown content
+                VStack(spacing: 60) {
+                    // Header section
+                    headerSection
+                        .glassEffect(
+                            Glass()
+                                .tint(.orange)
+                                .intensity(0.6)
+                                .interactive(true),
+                            in: RoundedRectangle(cornerRadius: 25, style: .continuous),
+                            isEnabled: true
+                        )
+                    
+                    // Countdown circle
+                    countdownCircle
+                    
+                    // Ready indicator
+                    readyIndicator
+                    
+                    Spacer(minLength: 80)
+                }
+                .padding(.horizontal, 40)
+                .padding(.top, 100)
             }
-            .padding(.horizontal, 40)
-            .padding(.top, 100)
         }
         .onAppear {
             manager.startCountDown()
@@ -126,11 +136,13 @@ struct CountDownView: View {
                     style: StrokeStyle(lineWidth: 8, lineCap: .round)
                 )
                 .frame(width: 280, height: 280)
-                .advancedLiquidGlassCard(
-                    tint: .orange,
-                    variant: .clear,
-                    intensity: .light,
-                    enableMotionEffects: true
+                .glassEffect(
+                    Glass()
+                        .tint(.orange)
+                        .intensity(0.5)
+                        .interactive(true),
+                    in: Circle(),
+                    isEnabled: true
                 )
             
             // Progress circle

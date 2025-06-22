@@ -17,24 +17,42 @@ struct SessionView: View {
             // Dynamic background with workout-specific colors
             dynamicBackground
             
-            // Main content
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 40) {
-                    // Header section with workout icon
-                    headerSection
-                    
-                    // Main metrics display
-                    MetricsView()
-                        .scaleEffect(pulseMetrics ? 1.02 : 1.0)
-                        .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: pulseMetrics)
-                    
-                    // Controls section
-                    ControlsView()
-                    
-                    Spacer(minLength: 60)
+            // Main content with glass effect container
+            GlassEffectContainer(spacing: 25) {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 40) {
+                        // Header section with workout icon
+                        headerSection
+                        
+                        // Main metrics display
+                        MetricsView()
+                            .glassEffect(
+                                Glass()
+                                    .tint(workoutIconColor)
+                                    .intensity(0.8)
+                                    .interactive(true),
+                                in: RoundedRectangle(cornerRadius: 24, style: .continuous),
+                                isEnabled: true
+                            )
+                            .scaleEffect(pulseMetrics ? 1.02 : 1.0)
+                            .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: pulseMetrics)
+                        
+                        // Controls section
+                        ControlsView()
+                            .glassEffect(
+                                Glass()
+                                    .tint(workoutIconColor)
+                                    .intensity(0.6)
+                                    .interactive(true),
+                                in: RoundedRectangle(cornerRadius: 20, style: .continuous),
+                                isEnabled: true
+                            )
+                        
+                        Spacer(minLength: 60)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 40)
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 40)
             }
         }
         .onAppear {
