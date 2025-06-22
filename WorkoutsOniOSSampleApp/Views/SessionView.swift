@@ -1,9 +1,10 @@
 /*
 Abstract:
-Revolutionary workout session view with stunning liquid glass design and immersive real-time metrics display.
+SWiftUI n HealthKit workout session view with stunning liquid glass design and immersive real-time metrics display.
 */
 
 import SwiftUI
+import HealthKit
 
 struct SessionView: View {
     @Environment(WorkoutManager.self) var workoutManager
@@ -203,7 +204,8 @@ struct SessionView: View {
         case .swimming: return .cyan
         case .yoga: return .purple
         case .functionalStrengthTraining: return .red
-        default: return .green
+        default:
+            return .green
         }
     }
     
@@ -219,7 +221,8 @@ struct SessionView: View {
         case .swimming: return "figure.pool.swim.circle.fill"
         case .yoga: return "figure.yoga.circle.fill"
         case .functionalStrengthTraining: return "figure.strengthtraining.functional.circle.fill"
-        default: return "figure.walk.circle.fill"
+        default:
+            return "figure.walk.circle.fill"
         }
     }
     
@@ -235,28 +238,32 @@ struct SessionView: View {
         switch locationType {
         case .indoor: return "Indoor"
         case .outdoor: return "Outdoor"
-        default: return "Flexible"
+        default:
+            return "Flexible"
         }
     }
     
     private var statusText: String {
         switch workoutManager.state {
-        case .inactive: return "Not Started"
-        case .active: return "Active"
-        case .running: return "In Progress"
-        case .paused: return "Paused"
-        case .ended: return "Completed"
+        case .notStarted: return "Not Started"
+        case .running:   return "In Progress"
+        case .paused:    return "Paused"
+        case .prepared: return "Prepared"
+        case .stopped:  return "Stopped"
+        case .ended:     return "Completed"
         @unknown default: return "Unknown"
         }
     }
     
     private var statusColor: Color {
         switch workoutManager.state {
-        case .inactive: return .gray
-        case .active, .running: return .green
-        case .paused: return .yellow
-        case .ended: return .blue
-        @unknown default: return .gray
+        case .notStarted:        return .gray
+        case .running:          return .green
+        case .paused:           return .yellow
+        case .prepared:         return .orange
+        case .stopped:          return .gray
+        case .ended:            return .blue
+        @unknown default:       return .gray
         }
     }
     
@@ -288,3 +295,4 @@ struct SessionView: View {
         .environment(workoutManager)
         .preferredColorScheme(.dark)
 }
+

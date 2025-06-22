@@ -71,7 +71,7 @@ struct GoerApp: App {
         case .countdownView:
             CountDownView()
                 .transition(.asymmetric(
-                    insertion: .scale(scale: 0.8).combined(with: .blur(radius: 10)),
+                    insertion: .scale(scale: 0.8).combined(with: .move(edge: .bottom)),
                     removal: .scale(scale: 1.2).combined(with: .opacity)
                 ))
             

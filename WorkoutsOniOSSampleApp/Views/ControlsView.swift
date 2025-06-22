@@ -1,6 +1,6 @@
 /*
 Abstract:
-Revolutionary workout controls view with stunning liquid glass design and immersive interaction feedback.
+SwiftUI workout controls view with stunning liquid glass design and immersive interaction feedback.
 */
 
 import SwiftUI
@@ -53,7 +53,6 @@ struct ControlsView: View {
             title: "End",
             subtitle: "Workout",
             color: .red,
-            isDestructive: true,
             glowIntensity: glowIntensity
         ) {
             endWorkoutWithConfirmation()
@@ -67,7 +66,7 @@ struct ControlsView: View {
             title: pauseResumeTitle,
             subtitle: pauseResumeSubtitle,
             color: pauseResumeColor,
-            isPulsing: workoutManager.state == .paused,
+          
             glowIntensity: glowIntensity
         ) {
             togglePauseResume()
@@ -177,6 +176,18 @@ struct ControlsView: View {
     }
 }
 
+/// A simple button style that scales the content while the user is pressing the button.
+private struct PressScaleButtonStyle: ButtonStyle {
+    var scaleAmount: CGFloat = 0.95
+    var animation: Animation = .easeOut(duration: 0.1)
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? scaleAmount : 1.0)
+            .animation(animation, value: configuration.isPressed)
+    }
+}
+
 /// Premium control button with advanced liquid glass styling
 private struct ControlButton: View {
     let icon: String
@@ -184,12 +195,8 @@ private struct ControlButton: View {
     let title: String
     let subtitle: String
     let color: Color
-    let isDestructive: Bool
     let glowIntensity: Double
     let action: () -> Void
-    
-    @State private var isPressed = false
-    @State private var pulseEffect = false
     
     init(
         icon: String,
@@ -197,7 +204,6 @@ private struct ControlButton: View {
         title: String,
         subtitle: String,
         color: Color,
-        isDestructive: Bool = false,
         glowIntensity: Double,
         action: @escaping () -> Void
     ) {
@@ -206,7 +212,6 @@ private struct ControlButton: View {
         self.title = title
         self.subtitle = subtitle
         self.color = color
-        self.isDestructive = isDestructive
         self.glowIntensity = glowIntensity
         self.action = action
     }
@@ -231,18 +236,7 @@ private struct ControlButton: View {
                             )
                         )
                         .frame(width: 60, height: 60)
-                        .scaleEffect(isPressed ? 0.9 : (pulseEffect ? 1.1 : 1.0))
-                        .opacity(glowIntensity)
-                    
-                    // Pulsing ring for destructive actions
-                    if isDestructive {
-                        Circle()
-                            .stroke(color.opacity(0.6), lineWidth: 2)
-                            .frame(width: 70, height: 70)
-                            .scaleEffect(pulseEffect ? 1.2 : 1.0)
-                            .opacity(pulseEffect ? 0.0 : 0.8)
-                            .animation(.easeOut(duration: 2.0).repeatForever(autoreverses: false), value: pulseEffect)
-                    }
+                        .scaleEffect(1.0)
                     
                     // Main icon
                     Image(systemName: icon)
@@ -254,7 +248,6 @@ private struct ControlButton: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .scaleEffect(isPressed ? 0.9 : 1.0)
                 }
                 
                 // Text labels
@@ -271,28 +264,14 @@ private struct ControlButton: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressScaleButtonStyle())
         .advancedLiquidGlassCard(
             tint: color,
             variant: .clear,
-            intensity: isPressed ? .heavy : .medium,
+            intensity: .medium,
             enableMotionEffects: true
         )
-        .scaleEffect(isPressed ? 0.95 : (pulseEffect ? (pulseEffect ? 1.03 : 1.0) : 1.0))
-        .animation(.interpolatingSpring(stiffness: 400, damping: 25), value: isPressed)
-        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: pulseEffect)
-        .onLongPressGesture(minimumDuration: 0) { pressing in
-            withAnimation(.easeOut(duration: 0.1)) {
-                isPressed = pressing
-            }
-        }
-        .onAppear {
-            if isDestructive {
-                withAnimation {
-                    pulseEffect = true
-                }
-            }
-        }
+        .scaleEffect(1.0)
     }
 }
 
@@ -303,8 +282,6 @@ private struct SecondaryControlButton: View {
     let color: Color
     let glowIntensity: Double
     let action: () -> Void
-    
-    @State private var isPressed = false
     
     var body: some View {
         Button(action: action) {
@@ -325,18 +302,13 @@ private struct SecondaryControlButton: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressScaleButtonStyle(scaleAmount: 0.95))
         .advancedLiquidGlassCard(
             tint: color,
             variant: .clear,
             intensity: .light,
             enableMotionEffects: false
         )
-        .scaleEffect(isPressed ? 0.95 : 1.0)
-        .animation(.easeOut(duration: 0.1), value: isPressed)
-        .onLongPressGesture(minimumDuration: 0) { pressing in
-            isPressed = pressing
-        }
     }
 }
 

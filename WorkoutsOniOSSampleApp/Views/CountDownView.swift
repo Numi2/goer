@@ -4,6 +4,7 @@ Revolutionary countdown view with stunning liquid glass design, immersive animat
 */
 
 import SwiftUI
+import HealthKit
 
 struct CountDownView: View {
     @State private var manager = CountDownManager()
@@ -295,3 +296,4 @@ struct CountDownView: View {
     CountDownView()
         .preferredColorScheme(.dark)
 }
+

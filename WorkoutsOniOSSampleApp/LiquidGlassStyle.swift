@@ -55,11 +55,11 @@ private struct AdvancedLiquidGlassCard: ViewModifier {
                     startLightMovement()
                 }
             }
-            .onLongPressGesture(minimumDuration: 0) { pressing in
+            .onLongPressGesture(minimumDuration: 0, pressing: { pressing in
                 withAnimation(.easeOut(duration: 0.15)) {
                     isPressed = pressing
                 }
-            }
+            }, perform: {})
     }
     
     private func startBreathingAnimation() {
@@ -70,11 +70,13 @@ private struct AdvancedLiquidGlassCard: ViewModifier {
     
     private func startLightMovement() {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            withAnimation(.easeInOut(duration: 3.0)) {
-                lightPosition = CGPoint(
-                    x: Double.random(in: 0.2...0.8),
-                    y: Double.random(in: 0.1...0.6)
-                )
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut(duration: 3.0)) {
+                    lightPosition = CGPoint(
+                        x: Double.random(in: 0.2...0.8),
+                        y: Double.random(in: 0.1...0.6)
+                    )
+                }
             }
         }
     }
@@ -280,7 +282,7 @@ public struct AdvancedLiquidGlassButton: ButtonStyle {
     
     @State private var hoverEffect: Bool = false
     
-    public init(
+    init(
         tint: Color = .blue,
         variant: LiquidGlassVariant = .regular,
         prominence: ButtonProminence = .standard
@@ -522,3 +524,4 @@ extension ButtonStyle where Self == AdvancedLiquidGlassButton {
         AdvancedLiquidGlassButton()
     }
 }
+
