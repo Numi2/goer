@@ -9,15 +9,12 @@ import HealthKit
 struct WorkoutTypes {
     static let supported: [HKWorkoutActivityType] = [
         .walking,
-        .running,
-        .cycling,
-        .rowing,
         .yoga
     ]
     
     static func shouldDisambiguateLocation(for activityType: HKWorkoutActivityType) -> Bool {
         switch activityType {
-        case .walking, .running, .cycling, .rowing:
+        case .running:
             return true
         default:
             return false
@@ -50,10 +47,7 @@ struct WorkoutTypes {
         switch activityType {
         case .walking, .running:
             return HKQuantityType(.distanceWalkingRunning)
-        case .rowing:
-            return HKQuantityType(.distanceRowing)
-        case .cycling:
-            return HKQuantityType(.distanceCycling)
+  
         default:
             return nil
         }
@@ -81,14 +75,9 @@ extension HKWorkoutConfiguration {
     
     var symbol: String {
         switch activityType {
-        case .running:
-            return locationType == .indoor ? "figure.run.treadmill" : activityType.symbol
+       
         case .walking:
             return locationType == .indoor ? "figure.walk.treadmill" : activityType.symbol
-        case .cycling:
-            return locationType == .indoor ? "figure.indoor.cycle" : activityType.symbol
-        case .rowing:
-            return locationType == .indoor ? "figure.indoor.rowing" : activityType.symbol
         default:
             return activityType.symbol
         }
@@ -115,12 +104,10 @@ extension HKWorkoutActivityType {
         switch self {
         case .running:
             return "Run"
-        case .cycling:
-            return "Cycle"
+       
         case .walking:
             return "Walk"
-        case .rowing:
-            return "Row"
+     
         case .yoga:
             return "Yoga"
         default:

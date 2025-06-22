@@ -137,9 +137,7 @@ class WorkoutManager: NSObject {
             HKQuantityType(.activeEnergyBurned),
             HKQuantityType(.basalEnergyBurned),
             HKQuantityType(.heartRate),
-            HKQuantityType(.distanceRowing),
-            HKQuantityType(.rowingSpeed),
-            HKQuantityType(.distanceCycling),
+          
             HKQuantityType(.distanceWalkingRunning)
         ]
         
