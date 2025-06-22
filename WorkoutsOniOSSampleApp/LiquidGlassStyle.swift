@@ -50,6 +50,10 @@ enum LiquidGlassIntensity {
     case light, medium, heavy
 }
 
+enum LiquidGlassVariant {
+    case regular, clear
+}
+
 enum ButtonProminence {
     case minimal, standard, prominent
 }
