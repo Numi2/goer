@@ -6,6 +6,18 @@
 
 import SwiftUI
 
+// MARK: - Legacy Support Types
+
+/// Placeholder enum maintained for source-compatibility with the previous, more
+/// elaborate Liquid Glass API.  These cases do not currently influence the
+/// simplified implementation but allow existing code that references
+/// `LiquidGlassIntensity` to continue compiling unchanged.
+public enum LiquidGlassIntensity {
+    case low
+    case medium
+    case high
+}
+
 // MARK: - Clean Extensions
 
 extension View {
@@ -42,19 +54,5 @@ extension View {
     func liquidGlassAppStyle() -> some View {
         self.advancedLiquidGlassAppStyle()
     }
-}
-
-// MARK: - Supporting Types (for compatibility)
-
-enum LiquidGlassIntensity {
-    case light, medium, heavy
-}
-
-enum LiquidGlassVariant {
-    case regular, clear
-}
-
-enum ButtonProminence {
-    case minimal, standard, prominent
 }
 

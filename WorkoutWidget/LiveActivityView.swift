@@ -19,11 +19,11 @@ struct LiveActivityView: View {
             HStack(alignment: .center, spacing: 12) {
                 Image(systemName: context.attributes.symbol)
                     .font(.system(size: 28, weight: .medium))
-                    .foregroundStyle(workoutColor)
+                   
                     .frame(width: 40, height: 40)
                     .background(
                         Circle()
-                            .fill(workoutColor.opacity(0.15))
+                            .fill(.opacity(0.15))
                     )
                 
                 ElapsedTimeView(elapsedTime: metrics.elapsedTime)
@@ -65,19 +65,9 @@ struct LiveActivityView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
     
-    private var workoutColor: Color {
-        // Map workout symbols to colors (simple heuristics)
-        switch context.attributes.symbol {
-        case let symbol if symbol.contains("run"): return .orange
-        case let symbol if symbol.contains("walk"): return .green
-        case let symbol if symbol.contains("cycle"): return .blue
-        case let symbol if symbol.contains("swim"): return .cyan
-        case let symbol if symbol.contains("yoga"): return .purple
-        case let symbol if symbol.contains("strength"): return .red
-        default: return .blue
-        }
+  
     }
-}
+
 
 private struct MetricItem: View {
     let icon: String
