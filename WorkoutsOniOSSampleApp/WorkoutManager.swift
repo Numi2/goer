@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 The class that wraps the data and operations related to a workout.
 */

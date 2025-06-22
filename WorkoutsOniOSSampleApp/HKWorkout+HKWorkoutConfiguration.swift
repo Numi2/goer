@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 An extension that provides the workout configuration for a workout.
 */

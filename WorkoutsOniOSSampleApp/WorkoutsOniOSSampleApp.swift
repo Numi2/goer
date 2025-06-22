@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 The SwiftUI app.
 */
@@ -8,8 +6,8 @@ The SwiftUI app.
 import SwiftUI
 
 @main
-struct WorkoutsOniOSSampleApp: App {
-    @UIApplicationDelegateAdaptor(WorkoutsOniOSSampleAppDelegate.self) var appDelegate
+struct GoerApp: App {
+    @UIApplicationDelegateAdaptor(GoerAppDelegate.self) var appDelegate
     @State private var workoutManager = WorkoutManager.shared
     @State private var navigationModel = NavigationModel()
     
@@ -43,3 +41,4 @@ struct WorkoutsOniOSSampleApp: App {
         }
     }
 }
+

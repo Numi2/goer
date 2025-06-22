@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 The structure that wraps the data you use for the widget.
 */

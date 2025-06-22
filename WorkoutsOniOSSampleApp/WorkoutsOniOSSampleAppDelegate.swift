@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 The UIKit app delegate of the app.
 */
@@ -10,7 +8,7 @@ import HealthKitUI
 import UIKit
 import Intents
 
-class WorkoutsOniOSSampleAppDelegate: NSObject, UIApplicationDelegate {
+class GoerAppDelegate: NSObject, UIApplicationDelegate {
     let handler = IntentHandler()
     
     func application(_ application: UIApplication,
@@ -29,7 +27,7 @@ class WorkoutsOniOSSampleAppDelegate: NSObject, UIApplicationDelegate {
             })
         }
         let configuration = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-        configuration.delegateClass = WorkoutsOniOSSampleAppSceneDelegate.self
+        configuration.delegateClass = GoerAppSceneDelegate.self
         return configuration
     }
     

@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 Types that conform to the `IntentHandler` protocol that you query to determine whether they can handle a specific type of `INIntent`.
 */

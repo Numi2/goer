@@ -1,6 +1,4 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
-
 Abstract:
 A SwiftUI view that shows a workout's elapsed time.
 */
