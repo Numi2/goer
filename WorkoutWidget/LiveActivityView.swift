@@ -1,6 +1,6 @@
 /*
 Abstract:
-A SwiftUI view that shows the workout metrics in a widget.
+Clean workout Live Activity view following Apple's Liquid Glass design principles.
 */
 
 import SwiftUI
@@ -10,49 +10,90 @@ struct LiveActivityView: View {
     @Environment(\.redactionReasons) var redactionReasons
     
     var context: ActivityViewContext<WorkoutWidgetAttributes>
+    
     var body: some View {
         let metrics = context.state.metrics
         
-        VStack {
-            HStack(alignment: .lastTextBaseline) {
+        VStack(spacing: 16) {
+            // Header with workout type and elapsed time
+            HStack(alignment: .center, spacing: 12) {
                 Image(systemName: context.attributes.symbol)
-                    .font(.system(size: 45))
-                    .foregroundColor(.accent)
-                    .padding(.trailing)
-                ElapsedTimeView(elapsedTime: context.state.metrics.elapsedTime)
-                    .font(.system(size: 45))
+                    .font(.system(size: 28, weight: .medium))
+                    .foregroundStyle(workoutColor)
+                    .frame(width: 40, height: 40)
+                    .background(
+                        Circle()
+                            .fill(workoutColor.opacity(0.15))
+                    )
+                
+                ElapsedTimeView(elapsedTime: metrics.elapsedTime)
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundStyle(.primary)
+                
+                Spacer()
             }
+            
+            // Metrics grid
             if metrics.activeEnergy != nil {
-                HStack {
-                    HStack {
-                        Image(systemName: "heart.fill")
-                            .foregroundColor(.red)
-                            .font(.system(size: 25))
-                        
-                        Text(redactionReasons.contains(.privacy) ? "--" : metrics.getHeartRate())
-                            .font(.system(size: 25))
-                    }
+                HStack(spacing: 16) {
+                    // Heart Rate
+                    MetricItem(
+                        icon: "heart.fill",
+                        iconColor: .red,
+                        value: redactionReasons.contains(.privacy) ? "--" : metrics.getHeartRate()
+                    )
+                    
+                    // Distance (if supported)
                     if metrics.supportsDistance {
-                        HStack {
-                            Image(systemName: "lines.measurement.horizontal")
-                                .foregroundColor(.green)
-                                .font(.system(size: 25))
-                                .padding(.leading)
-                            Text(redactionReasons.contains(.privacy) ? "--" : metrics.getDistance())
-                                .font(.system(size: 25))
-                        }
+                        MetricItem(
+                            icon: "location.fill",
+                            iconColor: .green,
+                            value: redactionReasons.contains(.privacy) ? "--" : metrics.getDistance()
+                        )
                     }
-                    HStack {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.purple)
-                            .font(.system(size: 25))
-                            .padding(.leading)
-                        Text(redactionReasons.contains(.privacy) ? "--" : metrics.getActiveEnergy())
-                    }
+                    
+                    // Active Energy
+                    MetricItem(
+                        icon: "flame.fill",
+                        iconColor: .orange,
+                        value: redactionReasons.contains(.privacy) ? "--" : metrics.getActiveEnergy()
+                    )
                 }
-                .padding(.top)
             }
         }
-        .liquidGlassBackground()
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+    }
+    
+    private var workoutColor: Color {
+        // Map workout symbols to colors (simple heuristics)
+        switch context.attributes.symbol {
+        case let symbol if symbol.contains("run"): return .orange
+        case let symbol if symbol.contains("walk"): return .green
+        case let symbol if symbol.contains("cycle"): return .blue
+        case let symbol if symbol.contains("swim"): return .cyan
+        case let symbol if symbol.contains("yoga"): return .purple
+        case let symbol if symbol.contains("strength"): return .red
+        default: return .blue
+        }
+    }
+}
+
+private struct MetricItem: View {
+    let icon: String
+    let iconColor: Color
+    let value: String
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(iconColor)
+            
+            Text(value)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.primary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
