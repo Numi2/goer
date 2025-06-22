@@ -38,6 +38,7 @@ struct ControlsView: View {
                 .tint(.yellow)
             }
         }
+        .liquidGlassBackground()
     }
 }
 

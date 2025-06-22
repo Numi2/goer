@@ -81,6 +81,7 @@ struct MetricsView: View {
                 )
                 .scenePadding()
             }
+            .liquidGlassBackground()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }

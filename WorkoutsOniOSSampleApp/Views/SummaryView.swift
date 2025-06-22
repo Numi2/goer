@@ -73,6 +73,7 @@ struct SummaryView: View {
                 ).accentColor(Color.pink)
             }
             .listStyle(.insetGrouped)
+            .liquidGlassBackground()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Summary")
             .toolbar {

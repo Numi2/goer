@@ -33,6 +33,7 @@ struct CountDownView: View {
                 WorkoutManager.shared.startWorkout()
             }
         }
+        .liquidGlassBackground()
         .onAppear() {
             manager.startCountDown()
         }
