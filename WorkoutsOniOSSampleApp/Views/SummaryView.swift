@@ -72,7 +72,7 @@ struct SummaryView: View {
                     )
                 ).accentColor(Color.pink)
             }
-            .listStyle(.plain)
+            .listStyle(.insetGrouped)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Summary")
             .toolbar {
@@ -84,7 +84,6 @@ struct SummaryView: View {
                     }) {
                         Image(systemName: "xmark")
                             .imageScale(.large)
-                            .foregroundColor(.primary)
                     }
                 }
             }

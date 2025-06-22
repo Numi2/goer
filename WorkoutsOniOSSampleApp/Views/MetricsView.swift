@@ -18,7 +18,7 @@ struct MetricsView: View {
                 VStack(alignment: .custom) {
                     HStack {
                         Image(systemName: "clock")
-                            .foregroundColor(.yellow)
+                            .foregroundColor(.accent)
                             .font(.system(size: 60))
                             .rotationEffect(.degrees(45))
                             .padding(.trailing)
@@ -30,7 +30,7 @@ struct MetricsView: View {
                     if workoutManager.metrics.supportsDistance {
                         HStack {
                             Image(systemName: "lines.measurement.horizontal")
-                                .foregroundColor(.green)
+                                .foregroundColor(.accent)
                                 .font(.system(size: 60))
                                 .padding(.trailing)
                             Text(workoutManager.metrics.getDistance())
@@ -41,7 +41,7 @@ struct MetricsView: View {
                     
                     HStack {
                         Image(systemName: "heart.fill")
-                            .foregroundColor(.red)
+                            .foregroundColor(.accent)
                             .font(.system(size: 60))
                             .padding(.trailing)
                         Text(workoutManager.metrics.getHeartRate()
@@ -53,7 +53,7 @@ struct MetricsView: View {
                     
                     HStack {
                         Image(systemName: "flame.fill")
-                            .foregroundColor(.purple)
+                            .foregroundColor(.accent)
                             .font(.system(size: 60))
                             .padding(.trailing)
                         Text(workoutManager.metrics.getActiveEnergy())
@@ -67,7 +67,7 @@ struct MetricsView: View {
                     if workoutManager.metrics.supportsSpeed {
                         HStack {
                             Image(systemName: "hare.fill")
-                                .foregroundColor(.teal)
+                                .foregroundColor(.accent)
                                 .font(.system(size: 60))
                             Text(workoutManager.metrics.getSpeed())
                             .alignmentGuide(.custom) { $0[.leading] }

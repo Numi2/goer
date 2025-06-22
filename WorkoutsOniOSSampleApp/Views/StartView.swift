@@ -26,13 +26,7 @@ struct StartView: View {
                         .padding(.bottom, 5.0)
                 }
                 .frame(minHeight: 50.0)
-                .listRowBackground(
-                    RoundedRectangle(cornerRadius: 15.0, style: .continuous)
-                        .fill(Color("AccentColor").opacity(0.16))
-                )
             }
-            .listRowSpacing(8)
-            .listRowSeparator(.hidden)
             .navigationBarTitle("Workouts")
             .onAppear {
                 workoutManager.requestAuthorization()

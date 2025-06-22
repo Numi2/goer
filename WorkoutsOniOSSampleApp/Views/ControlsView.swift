@@ -21,7 +21,7 @@ struct ControlsView: View {
                             .font(.largeTitle)
                     }
                     .padding(.leading)
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
                     .tint(.red)
             }
             
@@ -34,7 +34,7 @@ struct ControlsView: View {
                         .font(.largeTitle)
                 }
                 .padding(.trailing)
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.bordered)
                 .tint(.yellow)
             }
         }
