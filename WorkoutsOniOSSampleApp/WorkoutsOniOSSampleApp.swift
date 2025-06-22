@@ -1,6 +1,6 @@
 /*
 Abstract:
-Advanced SwiftUI workout app with revolutionary liquid glass design and immersive user experience.
+Clean SwiftUI workout app following Apple's Liquid Glass design principles.
 */
 
 import SwiftUI
@@ -17,118 +17,112 @@ struct GoerApp: App {
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            GlassEffectContainer(spacing: 40) {
-                ZStack {
-                    // Dynamic background that adapts to current view
-                    backgroundForCurrentView
-                    
-                    // Main content with sophisticated transitions
-                    mainContent
-                        .environment(workoutManager)
-                        .advancedLiquidGlassAppStyle()
-                }
-            }
-            .preferredColorScheme(.dark) // Liquid glass looks stunning in dark mode
-        }
-    }
-    
-    @ViewBuilder
-    private var backgroundForCurrentView: some View {
-        switch navigationModel.viewState {
-        case .startView:
-            DynamicMeshGradient(
-                colors: [.blue, .purple, .indigo],
-                animation: .easeInOut(duration: 10.0).repeatForever(autoreverses: true)
-            )
-        case .countdownView:
-            DynamicMeshGradient(
-                colors: [.orange, .red, .pink],
-                animation: .easeInOut(duration: 3.0).repeatForever(autoreverses: true)
-            )
-        case .sessionView:
-            DynamicMeshGradient(
-                colors: [.green, .mint, .cyan],
-                animation: .linear(duration: 15.0).repeatForever(autoreverses: false)
-            )
-        case .summaryView:
-            DynamicMeshGradient(
-                colors: [.purple, .blue, .cyan],
-                animation: .easeInOut(duration: 8.0).repeatForever(autoreverses: true)
-            )
-        }
-    }
-    
-    @ViewBuilder
-    private var mainContent: some View {
-        switch navigationModel.viewState {
-        case .startView:
-            NavigationStack {
-                StartView()
-            }
-            .transition(.asymmetric(
-                insertion: .scale(scale: 0.9).combined(with: .opacity),
-                removal: .scale(scale: 1.1).combined(with: .opacity)
-            ))
-            
-        case .countdownView:
-            CountDownView()
-                .transition(.asymmetric(
-                    insertion: .scale(scale: 0.8).combined(with: .move(edge: .bottom)),
-                    removal: .scale(scale: 1.2).combined(with: .opacity)
-                ))
-            
-        case .sessionView:
-            SessionView()
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-            
-        case .summaryView:
-            NavigationStack {
-                SummaryView()
-            }
-            .transition(.asymmetric(
-                insertion: .move(edge: .bottom).combined(with: .opacity),
-                removal: .move(edge: .top).combined(with: .opacity)
-            ))
+            ContentView()
+                .environment(workoutManager)
+                .environment(navigationModel)
         }
     }
 }
 
-/// Dynamic mesh gradient background that creates immersive environments
-private struct DynamicMeshGradient: View {
-    let colors: [Color]
-    let animation: Animation
-    
-    @State private var animateGradient = false
+struct ContentView: View {
+    @Environment(NavigationModel.self) var navigationModel
+    @Environment(WorkoutManager.self) var workoutManager
     
     var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: animateGradient ? .topLeading : .bottomLeading,
-            endPoint: animateGradient ? .bottomTrailing : .topTrailing
-        )
-        .ignoresSafeArea()
-        .overlay {
-            // Additional depth layer
-            RadialGradient(
-                colors: [
-                    Color.clear,
-                    colors.first?.opacity(0.3) ?? Color.clear,
-                    Color.clear
-                ],
-                center: animateGradient ? .topLeading : .bottomTrailing,
-                startRadius: 100,
-                endRadius: 400
-            )
-            .ignoresSafeArea()
-        }
-        .onAppear {
-            withAnimation(animation) {
-                animateGradient.toggle()
+        Group {
+            switch navigationModel.viewState {
+            case .startView:
+                MainTabView()
+            case .countdownView:
+                CountDownView()
+                    .transition(.move(edge: .bottom))
+            case .sessionView:
+                SessionView()
+                    .transition(.move(edge: .trailing))
+            case .summaryView:
+                NavigationStack {
+                    SummaryView()
+                }
+                .transition(.move(edge: .bottom))
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: navigationModel.viewState)
+    }
+}
+
+struct MainTabView: View {
+    @Environment(WorkoutManager.self) var workoutManager
+    
+    var body: some View {
+        TabView {
+            NavigationStack {
+                StartView()
+            }
+            .tabItem {
+                Image(systemName: "figure.run")
+                Text("Workouts")
+            }
+            
+            NavigationStack {
+                HistoryView()
+            }
+            .tabItem {
+                Image(systemName: "clock.arrow.circlepath")
+                Text("History")
+            }
+            
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem {
+                Image(systemName: "gearshape")
+                Text("Settings")
+            }
+        }
+    }
+}
+
+// Placeholder views for the tabs
+struct HistoryView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "clock.arrow.circlepath")
+                .font(.system(size: 60))
+                .foregroundStyle(.secondary)
+            
+            Text("Workout History")
+                .font(.title2)
+                .fontWeight(.semibold)
+            
+            Text("Your completed workouts will appear here")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .navigationTitle("History")
+    }
+}
+
+struct SettingsView: View {
+    var body: some View {
+        List {
+            Section("Health") {
+                Label("HealthKit", systemImage: "heart")
+                Label("Permissions", systemImage: "lock.shield")
+            }
+            
+            Section("Notifications") {
+                Label("Workout Reminders", systemImage: "bell")
+                Label("Achievement Alerts", systemImage: "star")
+            }
+            
+            Section("About") {
+                Label("Version", systemImage: "info.circle")
+                Label("Privacy Policy", systemImage: "hand.raised")
+            }
+        }
+        .navigationTitle("Settings")
     }
 }
 
