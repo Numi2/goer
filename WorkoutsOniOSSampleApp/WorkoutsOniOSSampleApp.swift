@@ -17,14 +17,16 @@ struct GoerApp: App {
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
-            ZStack {
-                // Dynamic background that adapts to current view
-                backgroundForCurrentView
-                
-                // Main content with sophisticated transitions
-                mainContent
-                    .environment(workoutManager)
-                    .advancedLiquidGlassAppStyle()
+            GlassEffectContainer(spacing: 40) {
+                ZStack {
+                    // Dynamic background that adapts to current view
+                    backgroundForCurrentView
+                    
+                    // Main content with sophisticated transitions
+                    mainContent
+                        .environment(workoutManager)
+                        .advancedLiquidGlassAppStyle()
+                }
             }
             .preferredColorScheme(.dark) // Liquid glass looks stunning in dark mode
         }

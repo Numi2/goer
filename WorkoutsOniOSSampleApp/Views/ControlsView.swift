@@ -12,35 +12,45 @@ struct ControlsView: View {
     @State private var pauseButtonPulse = false
     
     var body: some View {
-        VStack(spacing: 24) {
-            // Primary controls row
-            HStack(spacing: 20) {
-                // End workout button
-                endWorkoutButton
+        GlassEffectContainer(spacing: 20) {
+            VStack(spacing: 24) {
+                // Primary controls row
+                HStack(spacing: 20) {
+                    // End workout button
+                    endWorkoutButton
+                    
+                    // Pause/Resume button
+                    pauseResumeButton
+                }
                 
-                // Pause/Resume button
-                pauseResumeButton
+                // Secondary actions (if needed)
+                if workoutManager.state == .paused {
+                    secondaryActions
+                        .transition(.scale.combined(with: .opacity))
+                }
             }
-            
-            // Secondary actions (if needed)
-            if workoutManager.state == .paused {
-                secondaryActions
-                    .transition(.scale.combined(with: .opacity))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 20)
+            .glassEffect(
+                Glass()
+                    .tint(.gray)
+                    .intensity(0.4)
+                    .interactive(true),
+                in: RoundedRectangle(cornerRadius: 20, style: .continuous),
+                isEnabled: true
+            )
+            .advancedLiquidGlassCard(
+                tint: .gray,
+                variant: .clear,
+                intensity: .light,
+                enableMotionEffects: true
+            )
+            .scaleEffect(animateControls ? 1.0 : 0.9)
+            .opacity(animateControls ? 1.0 : 0.0)
+            .animation(.interpolatingSpring(stiffness: 200, damping: 15).delay(0.3), value: animateControls)
+            .onAppear {
+                startControlAnimations()
             }
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 20)
-        .advancedLiquidGlassCard(
-            tint: .gray,
-            variant: .clear,
-            intensity: .light,
-            enableMotionEffects: true
-        )
-        .scaleEffect(animateControls ? 1.0 : 0.9)
-        .opacity(animateControls ? 1.0 : 0.0)
-        .animation(.interpolatingSpring(stiffness: 200, damping: 15).delay(0.3), value: animateControls)
-        .onAppear {
-            startControlAnimations()
         }
     }
     
@@ -264,12 +274,14 @@ private struct ControlButton: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .buttonStyle(PressScaleButtonStyle())
-        .advancedLiquidGlassCard(
-            tint: color,
-            variant: .clear,
-            intensity: .medium,
-            enableMotionEffects: true
+        .buttonStyle(GlassButtonStyle())
+        .glassEffect(
+            Glass()
+                .tint(color)
+                .intensity(0.8)
+                .interactive(true),
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous),
+            isEnabled: true
         )
         .scaleEffect(1.0)
     }
@@ -302,12 +314,14 @@ private struct SecondaryControlButton: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
-        .buttonStyle(PressScaleButtonStyle(scaleAmount: 0.95))
-        .advancedLiquidGlassCard(
-            tint: color,
-            variant: .clear,
-            intensity: .light,
-            enableMotionEffects: false
+        .buttonStyle(GlassButtonStyle())
+        .glassEffect(
+            Glass()
+                .tint(color)
+                .intensity(0.6)
+                .interactive(true),
+            in: RoundedRectangle(cornerRadius: 12, style: .continuous),
+            isEnabled: true
         )
     }
 }

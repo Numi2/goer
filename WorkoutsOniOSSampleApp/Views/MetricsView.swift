@@ -13,33 +13,35 @@ struct MetricsView: View {
     @State private var glowIntensity: Double = 0.0
     
     var body: some View {
-        TimelineView(
-            MetricsTimelineSchedule(
-                from: workoutManager.builder?.startDate ?? Date(),
-                isPaused: workoutManager.session?.state == .paused
-            )
-        ) { context in
-            LazyVGrid(columns: gridColumns, spacing: 20) {
-                // Elapsed Time Card
-                elapsedTimeCard
-                
-                // Heart Rate Card
-                heartRateCard
-                
-                // Active Energy Card
-                activeEnergyCard
-                
-                // Distance Card (if supported)
-                if workoutManager.metrics.supportsDistance {
-                    distanceCard
+        GlassEffectContainer(spacing: 15) {
+            TimelineView(
+                MetricsTimelineSchedule(
+                    from: workoutManager.builder?.startDate ?? Date(),
+                    isPaused: workoutManager.session?.state == .paused
+                )
+            ) { context in
+                LazyVGrid(columns: gridColumns, spacing: 20) {
+                    // Elapsed Time Card
+                    elapsedTimeCard
+                    
+                    // Heart Rate Card
+                    heartRateCard
+                    
+                    // Active Energy Card
+                    activeEnergyCard
+                    
+                    // Distance Card (if supported)
+                    if workoutManager.metrics.supportsDistance {
+                        distanceCard
+                    }
+                    
+                    // Speed Card (if supported)
+                    if workoutManager.metrics.supportsSpeed {
+                        speedCard
+                    }
                 }
-                
-                // Speed Card (if supported)
-                if workoutManager.metrics.supportsSpeed {
-                    speedCard
-                }
+                .padding(.horizontal, 4)
             }
-            .padding(.horizontal, 4)
         }
         .onAppear {
             startMetricAnimations()
@@ -235,6 +237,14 @@ private struct MetricCard<Content: View>: View {
         .padding(.vertical, 24)
         .padding(.horizontal, 16)
         .frame(minHeight: 160)
+        .glassEffect(
+            Glass()
+                .tint(iconColor)
+                .intensity(0.7)
+                .interactive(true),
+            in: RoundedRectangle(cornerRadius: 20, style: .continuous),
+            isEnabled: true
+        )
         .advancedLiquidGlassCard(
             tint: iconColor,
             variant: .clear,

@@ -13,17 +13,27 @@ struct StartView: View {
     @State private var pulseSelection = false
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 0) {
-                // Hero section
-                heroSection
-                
-                // Workout cards grid
-                workoutCardsSection
-                    .padding(.top, 40)
+        GlassEffectContainer(spacing: 30) {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 0) {
+                    // Hero section
+                    heroSection
+                        .glassEffect(
+                            Glass()
+                                .tint(.blue)
+                                .intensity(0.8)
+                                .interactive(true),
+                            in: RoundedRectangle(cornerRadius: 30, style: .continuous),
+                            isEnabled: true
+                        )
+                    
+                    // Workout cards grid
+                    workoutCardsSection
+                        .padding(.top, 40)
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 100)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 100)
         }
         .navigationTitle("")
         .navigationBarHidden(true)
@@ -111,10 +121,7 @@ struct StartView: View {
             }
             .foregroundColor(.white)
         }
-        .buttonStyle(.advancedLiquidGlass(
-            tint: .green,
-            prominence: .prominent
-        ))
+        .buttonStyle(GlassButtonStyle())
         .scaleEffect(pulseSelection ? 1.05 : 1.0)
         .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulseSelection)
         .onAppear {
@@ -207,6 +214,14 @@ private struct WorkoutCard: View {
             .padding(.horizontal, 16)
         }
         .buttonStyle(.plain)
+        .glassEffect(
+            Glass()
+                .tint(workoutColor)
+                .intensity(isSelected ? 1.0 : 0.6)
+                .interactive(true),
+            in: RoundedRectangle(cornerRadius: 24, style: .continuous),
+            isEnabled: true
+        )
         .advancedLiquidGlassCard(
             tint: workoutColor,
             variant: isSelected ? .regular : .clear,
