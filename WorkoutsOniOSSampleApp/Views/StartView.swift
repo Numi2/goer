@@ -28,6 +28,7 @@ struct StartView: View {
                 .frame(minHeight: 50.0)
             }
             .navigationBarTitle("Workouts")
+            .liquidGlassBackground()
             .onAppear {
                 workoutManager.requestAuthorization()
             }

@@ -53,5 +53,6 @@ struct LiveActivityView: View {
                 .padding(.top)
             }
         }
+        .liquidGlassBackground()
     }
 }

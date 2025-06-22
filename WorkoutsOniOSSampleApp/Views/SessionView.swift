@@ -17,6 +17,7 @@ struct SessionView: View {
                 .padding(.vertical)
             ControlsView()
         }
+        .liquidGlassBackground()
     }
 }
 
