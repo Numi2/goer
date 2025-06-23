@@ -137,8 +137,9 @@ class WorkoutManager: NSObject {
             HKQuantityType(.activeEnergyBurned),
             HKQuantityType(.basalEnergyBurned),
             HKQuantityType(.heartRate),
-          
-            HKQuantityType(.distanceWalkingRunning)
+            HKQuantityType(.distanceWalkingRunning),
+            // Additional permissions for step tracking widgets
+            HKQuantityType(.stepCount)
         ]
         
         Task {
