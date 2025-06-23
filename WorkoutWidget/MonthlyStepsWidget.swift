@@ -61,7 +61,10 @@ struct MonthlyStepsProvider: TimelineProvider {
                 // Update every hour as requested
                 let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date()
                 let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-                completion(timeline)
+                
+                await MainActor.run {
+                    completion(timeline)
+                }
             } catch {
                 // Fallback entry on error
                 let fallbackEntry = MonthlyStepsEntry(
@@ -74,7 +77,10 @@ struct MonthlyStepsProvider: TimelineProvider {
                     )
                 )
                 let timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(3600)))
-                completion(timeline)
+                
+                await MainActor.run {
+                    completion(timeline)
+                }
             }
         }
     }
