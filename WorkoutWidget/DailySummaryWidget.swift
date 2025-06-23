@@ -46,16 +46,16 @@ struct DailySummaryProvider: TimelineProvider {
         completion(entry)
     }
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<DailySummaryEntry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<DailySummaryEntry>) -> ()) {
         Task { @MainActor in
+            let timeline: Timeline<DailySummaryEntry>
             do {
                 let data = try await HealthKitProvider.shared.fetchDailySummary()
                 let entry = DailySummaryEntry(date: Date(), data: data)
                 
                 // Update every 15 minutes
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date()
-                let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-                completion(timeline)
+                timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
                 // Fallback entry on error
                 let fallbackEntry = DailySummaryEntry(
@@ -66,9 +66,9 @@ struct DailySummaryProvider: TimelineProvider {
                         date: Date()
                     )
                 )
-                let timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(300)))
-                completion(timeline)
+                timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(300)))
             }
+            completion(timeline)
         }
     }
 }

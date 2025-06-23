@@ -52,15 +52,16 @@ struct HourlyStepsProvider: TimelineProvider {
         completion(entry)
     }
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<HourlyStepsEntry>) -> ()) {
-        Task {
+    func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<HourlyStepsEntry>) -> ()) {
+        Task { @MainActor in
+            let timeline: Timeline<HourlyStepsEntry>
             do {
                 let data = try await HealthKitProvider.shared.fetchHourlyData()
                 let entry = HourlyStepsEntry(date: Date(), data: data)
                 
                 // Update every minute as requested
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: Date()) ?? Date()
-                let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+                timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
                 // Fallback entry on error
                 let fallbackEntry = HourlyStepsEntry(
@@ -72,8 +73,9 @@ struct HourlyStepsProvider: TimelineProvider {
                         hourlySteps: Array(repeating: 0, count: 24)
                     )
                 )
-                let timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(60)))
+                timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(60)))
             }
+            completion(timeline)
         }
     }
 }

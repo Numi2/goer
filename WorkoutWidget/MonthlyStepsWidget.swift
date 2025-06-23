@@ -52,7 +52,7 @@ struct MonthlyStepsProvider: TimelineProvider {
         completion(entry)
     }
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<MonthlyStepsEntry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<MonthlyStepsEntry>) -> ()) {
         Task { @MainActor in
             let timeline: Timeline<MonthlyStepsEntry>
             
