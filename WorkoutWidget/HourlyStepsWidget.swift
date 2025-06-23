@@ -61,7 +61,6 @@ struct HourlyStepsProvider: TimelineProvider {
                 // Update every minute as requested
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: Date()) ?? Date()
                 let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-                completion(timeline)
             } catch {
                 // Fallback entry on error
                 let fallbackEntry = HourlyStepsEntry(
@@ -74,7 +73,6 @@ struct HourlyStepsProvider: TimelineProvider {
                     )
                 )
                 let timeline = Timeline(entries: [fallbackEntry], policy: .after(Date().addingTimeInterval(60)))
-                completion(timeline)
             }
         }
     }

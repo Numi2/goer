@@ -47,7 +47,7 @@ struct DailySummaryProvider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<DailySummaryEntry>) -> ()) {
-        Task {
+        Task { @MainActor in
             do {
                 let data = try await HealthKitProvider.shared.fetchDailySummary()
                 let entry = DailySummaryEntry(date: Date(), data: data)

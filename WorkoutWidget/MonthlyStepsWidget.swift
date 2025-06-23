@@ -153,31 +153,6 @@ struct MonthlyStepsView: View {
     }
 }
 
-// MARK: - Stat Card Component
-private struct StatCard: View {
-    let title: String
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: 10, weight: .medium))
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-            
-            Text(value)
-                .font(.system(size: 12, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-        }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 8)
-        .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 6))
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
 // MARK: - Monthly Bar Chart Component
 private struct MonthlyBarChart: View {
     let data: [Int]
