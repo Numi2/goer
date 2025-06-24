@@ -13,5 +13,6 @@ struct WorkoutWidgetBundle: WidgetBundle {
         DailySummaryWidget()
         HourlyStepsWidget()
         MonthlyStepsWidget()
+        StreakWidget()
     }
 }
