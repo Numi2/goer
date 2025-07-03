@@ -238,3 +238,18 @@ private struct MonthlyBarView: View {
         )
     )
 }
+
+#Preview("Dark", as: .systemMedium) {
+    MonthlyStepsWidget()
+        .environment(\.colorScheme, .dark)
+} timeline: {
+    MonthlyStepsEntry(
+        date: Date(),
+        data: MonthlyStepsModel(
+            month: Date(),
+            totalSteps: 245678,
+            totalDistance: 185400,
+            dailySteps: [12000, 8500, 6200, 9100, 11300, 7800, 13400, 9800, 10200, 8900, 7500, 12100, 9400, 8700, 10800, 9200, 8100, 11700, 9900, 8300, 7900, 10500, 9600, 8800, 11200, 9000, 8400, 10700, 9300, 8600, 7200]
+        )
+    )
+}

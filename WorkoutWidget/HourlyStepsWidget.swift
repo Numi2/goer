@@ -226,3 +226,18 @@ private struct BarView: View {
         )
     )
 }
+
+#Preview("Dark", as: .systemMedium) {
+    HourlyStepsWidget()
+        .environment(\.colorScheme, .dark)
+} timeline: {
+    HourlyStepsEntry(
+        date: Date(),
+        data: HourlyStepsModel(
+            date: Date(),
+            totalSteps: 12450,
+            totalDistance: 8400,
+            hourlySteps: [120, 340, 156, 78, 245, 890, 1200, 1450, 987, 1123, 1890, 1567, 1234, 1678, 1345, 1890, 1456, 1234, 1567, 1123, 890, 678, 345, 123].map(Double.init)
+        )
+    )
+}

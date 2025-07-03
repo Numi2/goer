@@ -152,3 +152,17 @@ struct DailySummaryView: View {
         )
     )
 }
+
+#Preview("Dark", as: .systemSmall) {
+    DailySummaryWidget()
+        .environment(\.colorScheme, .dark)
+} timeline: {
+    DailySummaryEntry(
+        date: Date(),
+        data: DailySummaryModel(
+            stepsToday: 8432,
+            distanceToday: 6200,
+            date: Date()
+        )
+    )
+}
