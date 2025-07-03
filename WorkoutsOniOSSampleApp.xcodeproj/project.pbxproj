@@ -31,6 +31,8 @@
 		46F671C12BD1B31600671A17 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C02BD1B31600671A17 /* ControlsView.swift */; };
 		46F671C32BD1B4DE00671A17 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C22BD1B4DE00671A17 /* SummaryView.swift */; };
 		46F671C72BD1B83800671A17 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F671C62BD1B83800671A17 /* WorkoutManager.swift */; };
+		F408C9072E16918300FF05E3 /* StepTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408C9062E16918300FF05E3 /* StepTracker.swift */; };
+		F408C9082E16918300FF05E3 /* StepTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408C9062E16918300FF05E3 /* StepTracker.swift */; };
 		F417A7082E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */; };
 		F417A7092E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */; };
 		F41B3D0F2E08D58800B0551F /* HealthKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41B3D0C2E08D58800B0551F /* HealthKitProvider.swift */; };
@@ -100,6 +102,7 @@
 		46F671C92BD1BC8C00671A17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0DA57652D9C81AA00226FEC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E0DA57672D9C81AA00226FEC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F408C9062E16918300FF05E3 /* StepTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTracker.swift; sourceTree = "<group>"; };
 		F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassEffectContainer.swift; sourceTree = "<group>"; };
 		F41B3D0C2E08D58800B0551F /* HealthKitProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitProvider.swift; sourceTree = "<group>"; };
 		F41B3D0D2E08D58800B0551F /* StepTrackingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTrackingModel.swift; sourceTree = "<group>"; };
@@ -114,22 +117,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				WorkoutWidgetViewModel.swift,
 			);
 			target = 46E310862DB1EEEE00D144A1 /* WorkoutWidgetExtension */;
-		};
-		46E310A72DB2B8A900D144A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				WorkoutWidgetsAttributes.swift,
-				WorkoutWidgetViewModel.swift,
-			);
-			target = 466C4B452BC6020800B2ECF8 /* WorkoutsOniOSSampleApp */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		46E3108A2DB1EEEE00D144A1 /* WorkoutWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (46E310A72DB2B8A900D144A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 46E3109D2DB1EEEF00D144A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WorkoutWidget; sourceTree = "<group>"; };
+		46E3108A2DB1EEEE00D144A1 /* WorkoutWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (46E3109D2DB1EEEF00D144A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WorkoutWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +238,7 @@
 				F417A7072E08BDDE0045DB5B /* GlassEffectContainer.swift */,
 				F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */,
 				46E310AB2DB31AC200D144A1 /* MetricsModel.swift */,
+				F408C9062E16918300FF05E3 /* StepTracker.swift */,
 				46F671BE2BD1B10F00671A17 /* ElapsedTimeView.swift */,
 			);
 			path = Shared;
@@ -382,6 +377,7 @@
 				46F671BF2BD1B10F00671A17 /* ElapsedTimeView.swift in Sources */,
 				46F671B92BD1AE9000671A17 /* MetricsView.swift in Sources */,
 				F417A7082E08BDDE0045DB5B /* GlassEffectContainer.swift in Sources */,
+				F408C9072E16918300FF05E3 /* StepTracker.swift in Sources */,
 				1DAEFFDB2C82435400D25C26 /* HKWorkout+HKWorkoutConfiguration.swift in Sources */,
 				1DAEFFB02C7E4B6E00D25C26 /* NavigationModel.swift in Sources */,
 				F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */,
@@ -407,6 +403,7 @@
 				F41B3D122E08D58800B0551F /* HealthKitProvider.swift in Sources */,
 				F41B3D132E08D58800B0551F /* StepTrackingModel.swift in Sources */,
 				F41B3D142E08D58800B0551F /* WidgetComponents.swift in Sources */,
+				F408C9082E16918300FF05E3 /* StepTracker.swift in Sources */,
 				46E310A92DB2E68200D144A1 /* ElapsedTimeView.swift in Sources */,
 				F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */,
 				46E310AD2DB31AC300D144A1 /* MetricsModel.swift in Sources */,

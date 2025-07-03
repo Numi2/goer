@@ -69,10 +69,10 @@ import Foundation
                     pushType: .token
                 )
                 self.setup(withActivity: activity)
-                WorkoutManager.shared.isLiveActivityActive = true
+             
             } catch {
                 print("startLiveActivity error: \(error.localizedDescription)")
-                WorkoutManager.shared.isLiveActivityActive = false
+          
             }
         }
     }
@@ -117,7 +117,7 @@ private extension WorkoutWidgetViewModel {
         } else {
             dismissalPolicy = .default
         }
-        WorkoutManager.shared.isLiveActivityActive = false
+      
         Task {
             await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: dismissalPolicy)
         }

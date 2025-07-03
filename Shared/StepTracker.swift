@@ -25,6 +25,7 @@ final class StepTracker {
         startPolling()
     }
 
+    @MainActor
     deinit {
         pollTask?.cancel()
     }
@@ -42,7 +43,7 @@ final class StepTracker {
 
             while !Task.isCancelled {
                 await self?.fetchDailySummary()
-                try? await Task.sleep(for: .seconds(pollInterval))
+                try? await Task.sleep(for: .seconds(self?.pollInterval ?? 300))
             }
         }
     }
