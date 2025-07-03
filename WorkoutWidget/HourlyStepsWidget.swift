@@ -242,4 +242,3 @@ private struct BarView: View {
         )
     )
 }
-.environment(\.colorScheme, .dark)

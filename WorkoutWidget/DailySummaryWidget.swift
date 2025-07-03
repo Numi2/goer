@@ -167,4 +167,3 @@ struct DailySummaryView: View {
         )
     )
 }
-.environment(\.colorScheme, .dark)

@@ -42,6 +42,8 @@
 		F45696182E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
 		F45696192E086BE900BD81EC /* LiquidGlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */; };
 		F456961B2E086DA600BD81EC /* LiquidGlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */; };
+		F4FF23E62E16817B00CD53AD /* Agent 2.md in Resources */ = {isa = PBXBuildFile; fileRef = F4FF23E52E16817B00CD53AD /* Agent 2.md */; };
+		F4FF23E72E16817B00CD53AD /* Agent 2.md in Resources */ = {isa = PBXBuildFile; fileRef = F4FF23E52E16817B00CD53AD /* Agent 2.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +106,7 @@
 		F41B3D0E2E08D58800B0551F /* WidgetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetComponents.swift; sourceTree = "<group>"; };
 		F45696172E086BE900BD81EC /* LiquidGlassBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassBackground.swift; sourceTree = "<group>"; };
 		F456961A2E086DA600BD81EC /* LiquidGlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassStyle.swift; sourceTree = "<group>"; };
+		F4FF23E52E16817B00CD53AD /* Agent 2.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Agent 2.md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -168,6 +171,7 @@
 				466C4B472BC6020800B2ECF8 /* Products */,
 				222F81135AC5AFBCC16FB231 /* Configuration */,
 				7AA1E14171C11E26CE0C6376 /* LICENSE */,
+				F4FF23E52E16817B00CD53AD /* Agent 2.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -349,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4FF23E62E16817B00CD53AD /* Agent 2.md in Resources */,
 				466C4B512BC6020A00B2ECF8 /* Preview Assets.xcassets in Resources */,
 				466C4B4E2BC6020A00B2ECF8 /* Assets.xcassets in Resources */,
 			);
@@ -358,6 +363,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4FF23E72E16817B00CD53AD /* Agent 2.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

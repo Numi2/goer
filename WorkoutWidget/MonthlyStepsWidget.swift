@@ -253,4 +253,3 @@ private struct MonthlyBarView: View {
         )
     )
 }
-.environment(\.colorScheme, .dark)
