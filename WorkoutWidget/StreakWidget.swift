@@ -152,8 +152,8 @@ struct StreakView: View {
 
 #Preview("Dark", as: .systemSmall) {
     StreakWidget()
-        .environment(\.colorScheme, .dark)
 } timeline: {
     StreakEntry(date: .init(), metric: .steps, threshold: 10_000, streak: 5)
 }
+.environment(\.colorScheme, .dark)
 

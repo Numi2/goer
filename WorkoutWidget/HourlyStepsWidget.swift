@@ -98,7 +98,7 @@ struct HourlyStepsView: View {
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.accentColor)
+                    .foregroundStyle(Color.accentColor)
                     .frame(width: 28, height: 28)
                     .background(
                         Circle()
@@ -207,7 +207,7 @@ private struct BarView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 2)
-            .fill(.accentColor.gradient)
+            .fill(Color.accentColor.gradient)
             .frame(height: max(2, normalizedHeight * 60))
             .frame(maxWidth: .infinity)
             .opacity(value > 0 ? 1.0 : 0.3)
@@ -231,7 +231,6 @@ private struct BarView: View {
 
 #Preview("Dark", as: .systemMedium) {
     HourlyStepsWidget()
-        .environment(\.colorScheme, .dark)
 } timeline: {
     HourlyStepsEntry(
         date: Date(),
@@ -243,3 +242,4 @@ private struct BarView: View {
         )
     )
 }
+.environment(\.colorScheme, .dark)

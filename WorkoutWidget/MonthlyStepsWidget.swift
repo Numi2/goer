@@ -242,7 +242,6 @@ private struct MonthlyBarView: View {
 
 #Preview("Dark", as: .systemMedium) {
     MonthlyStepsWidget()
-        .environment(\.colorScheme, .dark)
 } timeline: {
     MonthlyStepsEntry(
         date: Date(),
@@ -254,3 +253,4 @@ private struct MonthlyBarView: View {
         )
     )
 }
+.environment(\.colorScheme, .dark)
