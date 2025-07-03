@@ -14,6 +14,7 @@ struct GoerApp: App {
         WindowGroup {
             ContentView()
                 .environment(stepTracker)
+                .liquidGlassAppStyle()
         }
     }
 }
@@ -48,7 +49,7 @@ struct MainTabView: View {
     }
 }
 
-// Simple history view showing distance for each day
+// Simple history view showing distance for each day with liquid glass design
 struct HistoryView: View {
     @Environment(StepTracker.self) private var stepTracker
     
@@ -64,27 +65,38 @@ struct HistoryView: View {
     ]
     
     var body: some View {
-        List {
-            ForEach(dailyDistances.reversed(), id: \.date) { dayData in
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(dayData.date, style: .date)
-                            .font(.headline)
-                            .fontWeight(.medium)
-                        
-                        Text(dayData.date, format: .dateTime.weekday(.wide))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+        ZStack {
+            // Liquid glass background
+            Color.clear
+                .background(.ultraThinMaterial)
+                .ignoresSafeArea()
+            
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(dailyDistances.reversed(), id: \.date) { dayData in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(dayData.date, style: .date)
+                                    .font(.headline)
+                                    .fontWeight(.medium)
+                                
+                                Text(dayData.date, format: .dateTime.weekday(.wide))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            Text(dayData.formattedDistance)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.green)
+                        }
+                        .padding(.vertical, 8)
+                        .glassCard()
                     }
-                    
-                    Spacer()
-                    
-                    Text(dayData.formattedDistance)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.green)
                 }
-                .padding(.vertical, 4)
+                .padding()
             }
         }
         .navigationTitle("Distance History")

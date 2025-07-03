@@ -72,34 +72,41 @@ struct DistanceEntry: TimelineEntry {
     }
 }
 
-// MARK: - View
+// MARK: - View with Liquid Glass Design
 struct DistanceView: View {
     let entry: DistanceEntry
     
     var body: some View {
-        VStack(spacing: 12) {
-            // Icon and title
-            VStack(spacing: 8) {
-                Image(systemName: "location.fill")
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(.green)
+        ZStack {
+            // Liquid glass background
+            Color.clear
+                .background(.ultraThinMaterial)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 12) {
+                // Icon and title
+                VStack(spacing: 8) {
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundStyle(.green)
+                    
+                    Text("Distance")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.secondary)
+                }
                 
-                Text("Distance")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.secondary)
+                // Distance value
+                Text(entry.formattedDistance)
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(1)
+                
+                Spacer(minLength: 0)
             }
-            
-            // Distance value
-            Text(entry.formattedDistance)
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
-                .minimumScaleFactor(0.8)
-                .lineLimit(1)
-            
-            Spacer(minLength: 0)
+            .padding()
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
