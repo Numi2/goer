@@ -8,59 +8,44 @@ import SwiftUI
 @main
 struct GoerApp: App {
     @UIApplicationDelegateAdaptor(GoerAppDelegate.self) var appDelegate
-    @State private var workoutManager = WorkoutManager.shared
-    @State private var navigationModel = NavigationModel()
-    
-    init() {
-        navigationModel.observeWorkoutManager(workoutManager: workoutManager)
-    }
+    @State private var activityMonitor = ActivityMonitor.shared
+    @State private var stepTracker = StepTracker.shared
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(workoutManager)
-                .environment(navigationModel)
+                .environment(activityMonitor)
+                .environment(stepTracker)
         }
     }
 }
 
 struct ContentView: View {
-    @Environment(NavigationModel.self) var navigationModel
-    @Environment(WorkoutManager.self) var workoutManager
+    @Environment(ActivityMonitor.self) var activityMonitor
+    @Environment(StepTracker.self) var stepTracker
     
     var body: some View {
-        Group {
-            switch navigationModel.viewState {
-            case .startView:
-                MainTabView()
-            case .countdownView:
-                CountDownView()
-                    .transition(.move(edge: .bottom))
-            case .sessionView:
-                SessionView()
-                    .transition(.move(edge: .trailing))
-            case .summaryView:
-                NavigationStack {
-                    SummaryView()
-                }
-                .transition(.move(edge: .bottom))
-            }
-        }
-        .animation(.easeInOut(duration: 0.3), value: navigationModel.viewState)
+        MainTabView()
     }
 }
 
 struct MainTabView: View {
-    @Environment(WorkoutManager.self) var workoutManager
+    @Environment(ActivityMonitor.self) var activityMonitor
     
     var body: some View {
         TabView {
+            ActivityDashboardView()
+                .tabItem {
+                    Image(systemName: "figure.walk")
+                    Text("Today")
+                }
+            
             NavigationStack {
-                StartView()
+                TrendsView()
             }
             .tabItem {
-                Image(systemName: "figure.run")
-                Text("Workouts")
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                Text("Trends")
             }
             
             NavigationStack {
