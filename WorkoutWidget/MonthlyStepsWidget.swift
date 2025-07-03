@@ -184,11 +184,10 @@ private struct MonthlyBarChart: View {
             .frame(height: 80)
             
             // Legend
-            HStack(spacing: 16) {
-                LegendItem(color: .green, label: "\(stepGoal.formatted())+ steps")
-                LegendItem(color: .orange, label: "< \(stepGoal.formatted()) steps")
-                Spacer()
-            }
+            ChartLegend(items: [
+                ChartLegend.LegendItem(color: .green, label: "\(stepGoal.formatted())+ steps"),
+                ChartLegend.LegendItem(color: .orange, label: "< \(stepGoal.formatted()) steps")
+            ])
         }
     }
 }
@@ -222,24 +221,6 @@ private struct MonthlyBarView: View {
                 .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .infinity)
-    }
-}
-
-// MARK: - Legend Item Component
-private struct LegendItem: View {
-    let color: Color
-    let label: String
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Circle()
-                .fill(color)
-                .frame(width: 6, height: 6)
-            
-            Text(label)
-                .font(.system(size: 9, weight: .medium))
-                .foregroundStyle(.secondary)
-        }
     }
 }
 

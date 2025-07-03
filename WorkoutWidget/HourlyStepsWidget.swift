@@ -118,13 +118,13 @@ struct HourlyStepsView: View {
             
             // Summary stats
             HStack(spacing: 16) {
-                StatItem(
+                StatCard(
                     title: "Steps",
                     value: entry.data.formattedTotalSteps,
                     color: .blue
                 )
                 
-                StatItem(
+                StatCard(
                     title: "Distance",
                     value: entry.data.formattedTotalDistance,
                     color: .green
@@ -145,26 +145,7 @@ struct HourlyStepsView: View {
 }
 
 // MARK: - Stat Item Component
-private struct StatItem: View {
-    let title: String
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(title)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.secondary)
-            
-            Text(value)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
-        }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 8)
-        .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 6))
-    }
-}
+// Deprecated: replaced by shared `StatCard` (see `Shared/WidgetComponents.swift`).
 
 // MARK: - Hourly Bar Chart Component
 private struct HourlyBarChart: View {

@@ -60,8 +60,8 @@ struct StreakProvider: AppIntentTimelineProvider {
         // 2. Pull cached totals on the main actor because `StreakCache` is `@MainActor`
         let totals = await MainActor.run { StreakCache.shared.totals(for: metric, back: 30) }
 
-        // 3. Evaluate the streak
-        let streak = StreakEngine.evaluate(totals: totals, threshold: threshold)
+        // 3. Evaluate the streak on a background actor to avoid blocking the timeline provider
+        let streak = await StreakEngine.shared.evaluate(totals: totals, threshold: threshold)
 
         // 4. Create entry
         let entry = StreakEntry(date: Date(), metric: metric, threshold: threshold, streak: streak)

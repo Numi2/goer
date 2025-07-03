@@ -12,10 +12,10 @@
 - [x] MonthlyStepsWidget: Add accessibility labels for each day's bar (e.g. "Day 3: 6 200 steps")
 
 - [x] StreakWidget: Convert `Metric` to `enum Metric: String, CaseIterable` and sync with AppIntent options
-- [ ] StreakWidget: Off-load heavy streak evaluation to background actor when metrics expand
+- [x] StreakWidget: Off-load heavy streak evaluation to background actor when metrics expand
 
 ### Cross-cutting / Shared Infrastructure
-- [ ] De-duplicate UI components (`MetricRow`, `StatItem`, `LegendItem`) by reusing `Shared/WidgetComponents.swift`
+- [x] De-duplicate UI components (`MetricRow`, `StatItem`, `LegendItem`) by reusing `Shared/WidgetComponents.swift`
 - [ ] Localise all hard-coded strings; wrap in `LocalizedStringKey`
 - [ ] Add dark-mode snapshots to widget previews (`.environment(\.colorScheme, .dark)`)
 - [ ] Document refresh cadence rationale in each TimelineProvider
