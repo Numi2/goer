@@ -8,20 +8,17 @@ import SwiftUI
 @main
 struct GoerApp: App {
     @UIApplicationDelegateAdaptor(GoerAppDelegate.self) var appDelegate
-    @State private var activityMonitor = ActivityMonitor.shared
     @State private var stepTracker = StepTracker.shared
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(activityMonitor)
                 .environment(stepTracker)
         }
     }
 }
 
 struct ContentView: View {
-    @Environment(ActivityMonitor.self) var activityMonitor
     @Environment(StepTracker.self) var stepTracker
     
     var body: some View {
@@ -30,23 +27,15 @@ struct ContentView: View {
 }
 
 struct MainTabView: View {
-    @Environment(ActivityMonitor.self) var activityMonitor
+    @Environment(StepTracker.self) var stepTracker
     
     var body: some View {
         TabView {
             ActivityDashboardView()
                 .tabItem {
-                    Image(systemName: "figure.walk")
-                    Text("Today")
+                    Image(systemName: "location.fill")
+                    Text("Distance")
                 }
-            
-            NavigationStack {
-                TrendsView()
-            }
-            .tabItem {
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                Text("Trends")
-            }
             
             NavigationStack {
                 HistoryView()
@@ -55,59 +44,60 @@ struct MainTabView: View {
                 Image(systemName: "clock.arrow.circlepath")
                 Text("History")
             }
-            
-            NavigationStack {
-                SettingsView()
-            }
-            .tabItem {
-                Image(systemName: "gearshape")
-                Text("Settings")
-            }
         }
     }
 }
 
-// Placeholder views for the tabs
+// Simple history view showing distance for each day
 struct HistoryView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "clock.arrow.circlepath")
-                .font(.system(size: 60))
-                .foregroundStyle(.secondary)
-            
-            Text("Workout History")
-                .font(.title2)
-                .fontWeight(.semibold)
-            
-            Text("Your completed workouts will appear here")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-        }
-        .padding()
-        .navigationTitle("History")
-    }
-}
-
-struct SettingsView: View {
+    @Environment(StepTracker.self) private var stepTracker
+    
+    // Sample daily distance data - replace with real HealthKit data later
+    let dailyDistances = [
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -6, to: Date())!, distance: 4200),
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -5, to: Date())!, distance: 3800),
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -4, to: Date())!, distance: 5100),
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!, distance: 2900),
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, distance: 6200),
+        DailyDistance(date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, distance: 4700),
+        DailyDistance(date: Date(), distance: stepTracker.dailySummary?.distanceToday ?? 0)
+    ]
+    
     var body: some View {
         List {
-            Section("Health") {
-                Label("HealthKit", systemImage: "heart")
-                Label("Permissions", systemImage: "lock.shield")
-            }
-            
-            Section("Notifications") {
-                Label("Workout Reminders", systemImage: "bell")
-                Label("Achievement Alerts", systemImage: "star")
-            }
-            
-            Section("About") {
-                Label("Version", systemImage: "info.circle")
-                Label("Privacy Policy", systemImage: "hand.raised")
+            ForEach(dailyDistances.reversed(), id: \.date) { dayData in
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(dayData.date, style: .date)
+                            .font(.headline)
+                            .fontWeight(.medium)
+                        
+                        Text(dayData.date, format: .dateTime.weekday(.wide))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Text(dayData.formattedDistance)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.green)
+                }
+                .padding(.vertical, 4)
             }
         }
-        .navigationTitle("Settings")
+        .navigationTitle("Distance History")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
+struct DailyDistance {
+    let date: Date
+    let distance: Double // in meters
+    
+    var formattedDistance: String {
+        let measurement = Measurement(value: distance, unit: UnitLength.meters)
+        return measurement.formatted(.measurement(width: .abbreviated, usage: .road))
+    }
+}
