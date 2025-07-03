@@ -20,5 +20,5 @@
 - [x] Add dark-mode snapshots to widget previews (`.environment(\.colorScheme, .dark)`)
 - [x] Document refresh cadence rationale in each TimelineProvider
 - [x] Consolidate HealthKit queries into a single aggregated call inside `HealthKitProvider`
-- [ ] Add XCTest target with unit tests (e.g. `StreakEngine.evaluate` edge cases)
-- [ ] Ensure semantic colours adapt in light/dark modes across widgets
+- [x] Add XCTest target with unit tests (e.g. `StreakEngine.evaluate` edge cases)
+- [x] Ensure semantic colours adapt in light/dark modes across widgets

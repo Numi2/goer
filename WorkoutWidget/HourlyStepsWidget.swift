@@ -98,11 +98,11 @@ struct HourlyStepsView: View {
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.accentColor)
                     .frame(width: 28, height: 28)
                     .background(
                         Circle()
-                            .fill(.orange.opacity(0.15))
+                            .fill(Color.accentColor.opacity(0.15))
                     )
                 
                 VStack(alignment: .leading, spacing: 2) {
