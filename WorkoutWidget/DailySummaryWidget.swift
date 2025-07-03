@@ -91,7 +91,7 @@ struct DailySummaryView: View {
             HStack {
                 Image(systemName: "figure.walk")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.accentColor)
+                    .foregroundStyle(Color.accentColor)
                     .frame(width: 28, height: 28)
                     .background(
                         Circle()
@@ -157,7 +157,6 @@ struct DailySummaryView: View {
 
 #Preview("Dark", as: .systemSmall) {
     DailySummaryWidget()
-        .environment(\.colorScheme, .dark)
 } timeline: {
     DailySummaryEntry(
         date: Date(),
@@ -168,3 +167,4 @@ struct DailySummaryView: View {
         )
     )
 }
+.environment(\.colorScheme, .dark)
