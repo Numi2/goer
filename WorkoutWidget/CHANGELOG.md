@@ -1,61 +1,36 @@
-# WorkoutWidget – Changelog
+# Distance Widget – Changelog
 
-All notable changes to this project will be documented in this file.  The
-format is loosely based on [Keep a Changelog](https://keepachangelog.com/) and
-adheres to [Semantic Versioning](https://semver.org/) wherever possible.
+Simple distance tracking widget with no unnecessary complexity.
 
 ---
 
-## [Unreleased] – 2025-06-24
+## Version 2.0.0 – 2025 (Simplified)
+
+### 🎯 Major Simplification
+
+* **Complete Redesign**: Simplified from complex workout app to simple distance tracker
+  * Shows only daily walking distance in large, clear text
+  * Clean interface with green location icon
+  * No goals, no complex metrics, no workouts required
 
 ### Added
 
-* **Current Streak Widget**
-  * `StreakWidget.swift` – WidgetKit implementation (small & medium sizes).
-  * `SelectMetricIntent.swift` – AppIntent for per-widget configuration
-    (metric & threshold).
-  * `StreakMetrics.swift` – High-level `Metric` enum plus `MetricAppEnum` for
-    AppIntents.
-  * `StreakEngine.swift` – Pure-logic helper that converts daily totals into a
-    consecutive-day streak length.
-  * `StreakCache.swift` – App-Group `UserDefaults` cache that stores daily
-    totals per metric (`[Metric : [yyyy-MM-dd : Double]]`).
-  * `HKCollector.swift` – Lightweight HealthKit helper that writes today’s
-    total into `StreakCache` and triggers a widget reload.
-  * `StreakWidgetDocs.txt` – In-depth design & integration notes.
-
-* **Shared Step-Tracking Infrastructure**
-  * `Shared/StepTracker.swift` – `@Observable` singleton that polls HealthKit
-    every five minutes and publishes a `DailySummaryModel`.
-  * `Shared/StepTrackingModel.swift` – Codable models used by daily / hourly /
-    monthly widgets.
-
-### Changed
-
-* `WorkoutWidgetBundle.swift` – Registers the new `StreakWidget` in the widget
-  bundle.
-
-* Providers for existing widgets (`DailySummaryWidget.swift`,
-  `HourlyStepsWidget.swift`, `MonthlyStepsWidget.swift`)
-  * Marked `getTimeline` completion closures as `@Sendable` and moved timeline
-    construction onto the **main actor** to silence concurrency data-race
-    warnings emitted by Xcode 15.
+* `DistanceWidget.swift` – Simple widget showing only today's distance
+* Passive distance monitoring using existing StepTracker
 
 ### Removed
 
-* No deletions; only additive work or internal refactorings.
+* **All Complex Widgets**: Removed Streak, Hourly, Monthly, and Live Activity widgets
+* **Workout Features**: Removed all workout management and session tracking
+* **Complex Data**: Removed steps, energy, heart rate, and goal tracking
+* **Advanced Features**: Removed streaks, analytics, and motivational messages
 
-### Notes
+### Technical Changes
 
-* `StreakCache.suiteName` currently contains a placeholder App-Group ID
-  (`group.com.example.workoutwidget`).  Remember to update this constant to
-  match the real project identifier in both the main app and the widget
-  extension targets.
-
-* `HKCollector` is intended to live inside the **main app**, not the widget
-  target, so that it can operate in the background and react to
-  `HKObserverQuery` updates.
+* Uses simple `HealthKitProvider.shared.fetchDailySummary()` for distance data
+* 15-minute update intervals for battery efficiency
+* Clean, minimal codebase with unnecessary complexity removed
 
 ---
 
-Previous versions: see git history prior to this file’s introduction.
+Previous versions contained complex features that have been simplified away.

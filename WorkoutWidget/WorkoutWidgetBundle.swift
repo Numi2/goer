@@ -1,18 +1,14 @@
 /*
 Abstract:
-A widget bundle that shows the Live Activity and step tracking widgets.
+Simple widget bundle that shows only distance tracking.
 */
 
 import WidgetKit
 import SwiftUI
 
 @main
-struct WorkoutWidgetBundle: WidgetBundle {
+struct DistanceWidgetBundle: WidgetBundle {
     var body: some Widget {
-        WorkoutWidgetLiveActivity()
-        DailySummaryWidget()
-        HourlyStepsWidget()
-        MonthlyStepsWidget()
-        StreakWidget()
+        DistanceWidget()
     }
 }
