@@ -104,41 +104,129 @@ struct StreakView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "flame.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.red)
-                    .frame(width: 28, height: 28)
-                    .background(
-                        Circle()
-                            .fill(Color.red.opacity(0.15))
+        VStack(alignment: .leading, spacing: 16) {
+            // Enhanced Header with flame effect
+            LiquidWidgetHeader(
+                icon: "flame.fill",
+                iconColor: .red,
+                title: title,
+                subtitle: subtitle,
+                variant: .expanded
+            )
+
+            // Enhanced streak display with liquid morphing
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(entry.streak)")
+                    .font(.system(size: 52, weight: .heavy, design: .rounded))
+                    .foregroundStyle(streakGradient)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .quickGlass(
+                        tint: streakColor,
+                        intensity: 0.8,
+                        interactive: false
                     )
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(.primary)
-
-                    Text(subtitle)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(.secondary)
-                }
+                Text(entry.streak == 1 ? "Day" : "Days")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .quickGlass(
+                        tint: streakColor,
+                        intensity: 0.4,
+                        interactive: false
+                    )
+            }
+            
+            Spacer()
+            
+            // Streak status indicator
+            HStack {
+                Image(systemName: streakStatusIcon)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(streakColor)
+                
+                Text(streakStatusText)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.secondary)
+                
                 Spacer()
             }
-
-            // Big streak number
-            Text("\(entry.streak)")
-                .font(.system(size: 48, weight: .heavy, design: .rounded))
-                .foregroundStyle(entry.streak > 0 ? .primary : .secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text(entry.streak == 1 ? "Day" : "Days")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.secondary)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .quickGlass(
+                tint: streakColor,
+                intensity: 0.3,
+                interactive: false
+            )
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .enhancedGlassCard(
+            variant: entry.streak > 0 ? .prominent : .regular,
+            intensity: 1.0,
+            enableMorph: true,
+            tint: streakColor
+        )
+        .dynamicLiquidBackground(
+            colors: streakBackgroundColors,
+            intensity: entry.streak > 0 ? 0.9 : 0.4
+        )
+    }
+    
+    private var streakColor: Color {
+        switch entry.streak {
+        case 0: return .gray
+        case 1...3: return .orange
+        case 4...7: return .yellow
+        case 8...14: return .green
+        case 15...30: return .blue
+        default: return .purple
+        }
+    }
+    
+    private var streakGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                streakColor,
+                streakColor.opacity(0.8),
+                streakColor.opacity(0.9)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+    
+    private var streakBackgroundColors: [Color] {
+        [
+            streakColor.opacity(0.2),
+            Color.red.opacity(0.1),
+            streakColor.opacity(0.05)
+        ]
+    }
+    
+    private var streakStatusIcon: String {
+        switch entry.streak {
+        case 0: return "moon.zzz"
+        case 1...3: return "flame"
+        case 4...7: return "flame.fill"
+        case 8...14: return "bolt.fill"
+        case 15...30: return "star.fill"
+        default: return "crown.fill"
+        }
+    }
+    
+    private var streakStatusText: String {
+        switch entry.streak {
+        case 0: return "Start your streak today!"
+        case 1: return "Great start! Keep it up!"
+        case 2...3: return "Building momentum..."
+        case 4...7: return "You're on fire!"
+        case 8...14: return "Incredible consistency!"
+        case 15...30: return "Streak master!"
+        default: return "Legendary dedication!"
+        }
     }
 }
 

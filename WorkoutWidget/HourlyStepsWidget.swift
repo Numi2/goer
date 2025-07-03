@@ -93,93 +93,125 @@ struct HourlyStepsView: View {
     let entry: HourlyStepsEntry
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Color.accentColor)
-                    .frame(width: 28, height: 28)
-                    .background(
-                        Circle()
-                            .fill(Color.accentColor.opacity(0.15))
-                    )
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(entry.data.dateTitle)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    
-                    Text("Hourly Steps")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.secondary)
-                }
-                
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            // Enhanced Header
+            LiquidWidgetHeader(
+                icon: "chart.bar.fill",
+                iconColor: Color.accentColor,
+                title: entry.data.dateTitle,
+                subtitle: "Hourly Steps",
+                variant: .expanded
+            )
             
-            // Summary stats
-            HStack(spacing: 16) {
-                StatCard(
+            // Enhanced summary stats
+            HStack(spacing: 12) {
+                LiquidStatCard(
                     title: "Steps",
                     value: entry.data.formattedTotalSteps,
-                    color: .blue
+                    color: .blue,
+                    size: .medium,
+                    variant: .glass
                 )
                 
-                StatCard(
+                LiquidStatCard(
                     title: "Distance",
                     value: entry.data.formattedTotalDistance,
-                    color: .green
+                    color: .green,
+                    size: .medium,
+                    variant: .glass
                 )
             }
             
-            // Bar chart
-            HourlyBarChart(data: entry.data.hourlySteps)
+            // Enhanced bar chart with liquid effects
+            EnhancedHourlyBarChart(data: entry.data.hourlySteps)
             
-            // Optional timestamp caption for clarity when WidgetKit delays updates
+            // Enhanced timestamp with subtle glass effect
             Text("Data as of \(entry.date.formatted(date: .omitted, time: .shortened))")
                 .font(.system(size: 9, weight: .medium))
                 .foregroundStyle(.tertiary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .quickGlass(tint: .gray, intensity: 0.3)
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .enhancedGlassCard(
+            variant: .regular,
+            intensity: 1.0,
+            enableMorph: true,
+            tint: Color.accentColor
+        )
+        .dynamicLiquidBackground(
+            colors: [
+                Color.orange.opacity(0.2),
+                Color.accentColor.opacity(0.1),
+                Color.blue.opacity(0.05)
+            ],
+            intensity: 0.7
+        )
     }
 }
 
-// MARK: - Stat Item Component
-// Deprecated: replaced by shared `StatCard` (see `Shared/WidgetComponents.swift`).
-
-// MARK: - Hourly Bar Chart Component
-private struct HourlyBarChart: View {
+// MARK: - Enhanced Hourly Bar Chart Component
+private struct EnhancedHourlyBarChart: View {
     let data: [Double]
+    @State private var hoveredBar: Int? = nil
     
     var maxValue: Double {
         data.max() ?? 1
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            // Chart
+        VStack(alignment: .leading, spacing: 6) {
+            // Chart with enhanced liquid bars
             HStack(alignment: .bottom, spacing: 1) {
                 ForEach(0..<min(data.count, 24), id: \.self) { hour in
-                    BarView(
+                    LiquidChartBar(
                         value: data[hour],
                         maxValue: maxValue,
-                        hour: hour
+                        color: barColor(for: hour),
+                        style: .liquid,
+                        isActive: hoveredBar == hour
                     )
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            hoveredBar = hoveredBar == hour ? nil : hour
+                        }
+                    }
                 }
             }
             .frame(height: 60)
             
-            // Time labels
+            // Enhanced time labels with glass background
             HStack {
                 ForEach([0,6,12,18,24], id: \.self) { hour in
                     Text(Self.label(for: hour))
                         .font(.system(size: 9, weight: .medium))
                         .foregroundStyle(.tertiary)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .quickGlass(tint: .clear, intensity: 0.4)
                     if hour != 24 { Spacer() }
                 }
             }
+        }
+        .padding(.horizontal, 4)
+        .quickGlass(
+            tint: Color.accentColor,
+            intensity: 0.5,
+            interactive: false
+        )
+    }
+    
+    private func barColor(for hour: Int) -> Color {
+        let calendar = Calendar.current
+        let currentHour = calendar.component(.hour, from: Date())
+        
+        if hour == currentHour {
+            return .orange
+        } else if hour < currentHour {
+            return Color.accentColor
+        } else {
+            return Color.accentColor.opacity(0.6)
         }
     }
     
@@ -189,28 +221,8 @@ private struct HourlyBarChart: View {
         guard let date = calendar.date(byAdding: .hour, value: hour % 24, to: baseDate) else { return "" }
         let formatter = DateFormatter()
         formatter.locale = Locale.current
-        formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: formatter.locale) // hour format respecting 12/24h
+        formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: formatter.locale)
         return formatter.string(from: date)
-    }
-}
-
-// MARK: - Bar View Component
-private struct BarView: View {
-    let value: Double
-    let maxValue: Double
-    let hour: Int
-    
-    private var normalizedHeight: CGFloat {
-        guard maxValue > 0 else { return 0 }
-        return CGFloat(value / maxValue)
-    }
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 2)
-            .fill(Color.accentColor.gradient)
-            .frame(height: max(2, normalizedHeight * 60))
-            .frame(maxWidth: .infinity)
-            .opacity(value > 0 ? 1.0 : 0.3)
     }
 }
 

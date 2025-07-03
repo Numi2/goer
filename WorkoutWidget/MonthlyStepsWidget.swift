@@ -184,11 +184,7 @@ private struct MonthlyBarChart: View {
             }
             .frame(height: 80)
             
-            // Legend
-            ChartLegend(items: [
-                ChartLegend.LegendItem(color: .green, label: "\(stepGoal.formatted())+ steps"),
-                ChartLegend.LegendItem(color: .orange, label: "< \(stepGoal.formatted()) steps")
-            ])
+      
         }
     }
 }
