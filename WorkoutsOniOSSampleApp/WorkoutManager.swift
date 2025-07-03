@@ -100,7 +100,6 @@ class WorkoutManager: NSObject {
                 state = .running
                 try await builder?.beginCollection(at: startDate)
                 
-                WorkoutWidgetViewModel.shared.startLiveActivity(symbol: workoutConfiguration?.activityType.symbol ?? "exclamationmark.questionmark")
                 startWorkoutTimer()
             } catch {
                 print("Failed to start workout \(error))")
@@ -119,7 +118,6 @@ class WorkoutManager: NSObject {
         workoutConfiguration = recoveredSession.workoutConfiguration
         builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: recoveredSession.workoutConfiguration)
         
-        WorkoutWidgetViewModel.shared.startLiveActivity(symbol: workoutConfiguration?.activityType.symbol ?? "exclamationmark.questionmark")
         startWorkoutTimer()
     }
 
@@ -242,7 +240,6 @@ class WorkoutManager: NSObject {
             try await builder.endCollection(at: change.date)
             finishedWorkout = try await builder.finishWorkout()
             self.metrics.elapsedTime = finishedWorkout?.duration ?? 0
-            WorkoutWidgetViewModel.shared.endLiveActivity(dismissTimeInterval: 60, metrics: metrics)
             session?.end()
         } catch {
             print("Error finishing workout: \(error)")
@@ -258,7 +255,6 @@ class WorkoutManager: NSObject {
             Task {
                 await MainActor.run {
                     self.metrics.elapsedTime = self.builder?.elapsedTime ?? 0
-                    WorkoutWidgetViewModel.shared.updateLiveActivity(shouldAlert: false, metrics: self.metrics)
                 }
             }
         }

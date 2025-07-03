@@ -8,20 +8,17 @@ import SwiftUI
 @main
 struct GoerApp: App {
     @UIApplicationDelegateAdaptor(GoerAppDelegate.self) var appDelegate
-    @State private var activityMonitor = ActivityMonitor.shared
     @State private var stepTracker = StepTracker.shared
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(activityMonitor)
                 .environment(stepTracker)
         }
     }
 }
 
 struct ContentView: View {
-    @Environment(ActivityMonitor.self) var activityMonitor
     @Environment(StepTracker.self) var stepTracker
     
     var body: some View {
@@ -30,24 +27,9 @@ struct ContentView: View {
 }
 
 struct MainTabView: View {
-    @Environment(ActivityMonitor.self) var activityMonitor
     
     var body: some View {
         TabView {
-            ActivityDashboardView()
-                .tabItem {
-                    Image(systemName: "figure.walk")
-                    Text("Today")
-                }
-            
-            NavigationStack {
-                TrendsView()
-            }
-            .tabItem {
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                Text("Trends")
-            }
-            
             NavigationStack {
                 HistoryView()
             }

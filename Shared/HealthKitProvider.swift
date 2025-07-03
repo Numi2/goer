@@ -347,13 +347,12 @@ class HealthKitProvider: ObservableObject {
     private func fetchLatestHeartRate() async -> Double? {
         return await withCheckedContinuation { continuation in
             let heartRateType = HKQuantityType(.heartRate)
-            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
             
             let query = HKSampleQuery(
                 sampleType: heartRateType,
                 predicate: nil,
                 limit: 1,
-                sortDescriptors: [sortDescriptor]
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
             ) { _, samples, error in
                 if let error = error {
                     print("Error fetching heart rate: \(error)")
@@ -376,13 +375,12 @@ class HealthKitProvider: ObservableObject {
     private func fetchLatestHeartRateVariability() async -> Double? {
         return await withCheckedContinuation { continuation in
             let hrvType = HKQuantityType(.heartRateVariabilitySDNN)
-            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
             
             let query = HKSampleQuery(
                 sampleType: hrvType,
                 predicate: nil,
                 limit: 1,
-                sortDescriptors: [sortDescriptor]
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
             ) { _, samples, error in
                 if let error = error {
                     print("Error fetching HRV: \(error)")
@@ -405,13 +403,12 @@ class HealthKitProvider: ObservableObject {
     private func fetchLatestOxygenSaturation() async -> Double? {
         return await withCheckedContinuation { continuation in
             let spo2Type = HKQuantityType(.oxygenSaturation)
-            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
             
             let query = HKSampleQuery(
                 sampleType: spo2Type,
                 predicate: nil,
                 limit: 1,
-                sortDescriptors: [sortDescriptor]
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
             ) { _, samples, error in
                 if let error = error {
                     print("Error fetching oxygen saturation: \(error)")
@@ -434,13 +431,12 @@ class HealthKitProvider: ObservableObject {
     private func fetchLatestBodyTemperature() async -> Double? {
         return await withCheckedContinuation { continuation in
             let tempType = HKQuantityType(.bodyTemperature)
-            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
             
             let query = HKSampleQuery(
                 sampleType: tempType,
                 predicate: nil,
                 limit: 1,
-                sortDescriptors: [sortDescriptor]
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
             ) { _, samples, error in
                 if let error = error {
                     print("Error fetching body temperature: \(error)")
@@ -465,14 +461,12 @@ class HealthKitProvider: ObservableObject {
             let systolicType = HKQuantityType(.bloodPressureSystolic)
             let diastolicType = HKQuantityType(.bloodPressureDiastolic)
             
-            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-            
             // Fetch systolic first
             let systolicQuery = HKSampleQuery(
                 sampleType: systolicType,
                 predicate: nil,
                 limit: 1,
-                sortDescriptors: [sortDescriptor]
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
             ) { _, samples, error in
                 if let error = error {
                     print("Error fetching systolic BP: \(error)")
@@ -492,7 +486,7 @@ class HealthKitProvider: ObservableObject {
                     sampleType: diastolicType,
                     predicate: nil,
                     limit: 1,
-                    sortDescriptors: [sortDescriptor]
+                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
                 ) { _, samples, error in
                     if let error = error {
                         print("Error fetching diastolic BP: \(error)")
