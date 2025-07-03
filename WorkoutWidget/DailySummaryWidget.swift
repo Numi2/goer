@@ -86,54 +86,69 @@ struct DailySummaryView: View {
     let entry: DailySummaryEntry
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                Image(systemName: "figure.walk")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Color.accentColor)
-                    .frame(width: 28, height: 28)
-                    .background(
-                        Circle()
-                            .fill(Color.accentColor.opacity(0.15))
-                    )
-                
-                Text("Today")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.primary)
-                
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 16) {
+            // Enhanced Header
+            LiquidWidgetHeader(
+                icon: "figure.walk",
+                iconColor: Color.accentColor,
+                title: "Today",
+                subtitle: "Daily Summary",
+                variant: .expanded
+            )
             
-            // Metrics
-            VStack(alignment: .leading, spacing: 8) {
-                MetricDisplay(
+            // Metrics with enhanced glass effects
+            VStack(alignment: .leading, spacing: 12) {
+                LiquidMetricDisplay(
                     icon: "figure.walk.circle.fill",
                     iconColor: .blue,
                     title: "Steps",
-                    value: entry.data.formattedSteps
+                    value: entry.data.formattedSteps,
+                    layout: .horizontal,
+                    style: .prominent
                 )
                 
-                MetricDisplay(
+                LiquidMetricDisplay(
                     icon: "location.circle.fill",
                     iconColor: .green,
                     title: "Distance",
-                    value: entry.data.formattedDistance
+                    value: entry.data.formattedDistance,
+                    layout: .horizontal,
+                    style: .prominent
                 )
             }
             
             Spacer()
             
-            // Motivational message
+            // Enhanced motivational message with liquid background
             Text(entry.data.motivationalMessage)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .quickGlass(
+                    tint: Color.accentColor,
+                    intensity: 0.6,
+                    interactive: false
+                )
                 .accessibilityLabel(entry.data.motivationalMessage)
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .enhancedGlassCard(
+            variant: .regular,
+            intensity: 1.0,
+            enableMorph: true,
+            tint: Color.accentColor
+        )
+        .dynamicLiquidBackground(
+            colors: [
+                Color.accentColor.opacity(0.15),
+                Color.blue.opacity(0.1),
+                Color.green.opacity(0.05)
+            ],
+            intensity: 0.8
+        )
     }
 }
 
