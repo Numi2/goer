@@ -53,7 +53,9 @@ struct DailySummaryProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchDailySummary()
                 let entry = DailySummaryEntry(date: Date(), data: data)
                 
-                // Update every 15 minutes
+                // WidgetKit treats 15 min as the practical lower-bound for non-Live-Activity widgets.
+                // Updating more aggressively would be throttled and waste budget without user benefit.
+                // A 15-minute cadence gives users near-real-time feedback while respecting battery life.
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {

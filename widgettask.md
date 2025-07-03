@@ -18,7 +18,7 @@
 - [x] De-duplicate UI components (`MetricRow`, `StatItem`, `LegendItem`) by reusing `Shared/WidgetComponents.swift`
 - [x] Localise all hard-coded strings; wrap in `LocalizedStringKey`
 - [x] Add dark-mode snapshots to widget previews (`.environment(\.colorScheme, .dark)`)
-- [ ] Document refresh cadence rationale in each TimelineProvider
-- [ ] Consolidate HealthKit queries into a single aggregated call inside `HealthKitProvider`
+- [x] Document refresh cadence rationale in each TimelineProvider
+- [x] Consolidate HealthKit queries into a single aggregated call inside `HealthKitProvider`
 - [ ] Add XCTest target with unit tests (e.g. `StreakEngine.evaluate` edge cases)
 - [ ] Ensure semantic colours adapt in light/dark modes across widgets

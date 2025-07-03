@@ -66,7 +66,9 @@ struct StreakProvider: AppIntentTimelineProvider {
         // 4. Create entry
         let entry = StreakEntry(date: Date(), metric: metric, threshold: threshold, streak: streak)
 
-        // 5. Schedule the next update shortly after midnight
+        // 5. Schedule the next update shortly after midnight.
+        // Streak only changes once per day at rollover, so we align refresh ~5 minutes after midnight
+        // to ensure HealthKit has written the previous day's data.
         var nextUpdate: Date
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) {
             nextUpdate = Calendar.current.startOfDay(for: tomorrow)

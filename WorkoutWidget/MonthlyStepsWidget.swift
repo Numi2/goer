@@ -60,7 +60,8 @@ struct MonthlyStepsProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchMonthlyData()
                 let entry = MonthlyStepsEntry(date: Date(), data: data)
                 
-                // Update every hour as requested
+                // Update every hour.
+                // Monthly progress changes less frequently; hourly refresh keeps data fresh without wasting the 4-hour default budget.
                 let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {

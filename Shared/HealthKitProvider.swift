@@ -26,6 +26,16 @@ class HealthKitProvider: ObservableObject {
         try await healthStore.requestAuthorization(toShare: [], read: typesToRead)
     }
     
+    // MARK: - Aggregated Totals Helper
+    /// Fetches both **steps** and **distance** totals for the given date range
+    /// in parallel so that callers do not have to duplicate the two individual
+    /// queries.
+    private func fetchTotals(from startDate: Date, to endDate: Date) async throws -> (steps: Double, distance: Double) {
+        async let steps = fetchSteps(from: startDate, to: endDate)
+        async let distance = fetchDistance(from: startDate, to: endDate)
+        return try await (steps: steps, distance: distance)
+    }
+    
     // MARK: - Daily Summary Data
     func fetchDailySummary() async throws -> DailySummaryModel {
         let calendar = Calendar.current
@@ -33,10 +43,7 @@ class HealthKitProvider: ObservableObject {
         let startOfDay = calendar.startOfDay(for: now)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? now
         
-        async let steps = fetchSteps(from: startOfDay, to: endOfDay)
-        async let distance = fetchDistance(from: startOfDay, to: endOfDay)
-        
-        let (totalSteps, totalDistance) = try await (steps, distance)
+        let (totalSteps, totalDistance) = try await fetchTotals(from: startOfDay, to: endOfDay)
         
         return DailySummaryModel(
             stepsToday: Int(totalSteps),
@@ -52,14 +59,11 @@ class HealthKitProvider: ObservableObject {
         let startOfDay = calendar.startOfDay(for: now)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? now
         
-        // Fetch total for the day
-        async let totalSteps = fetchSteps(from: startOfDay, to: endOfDay)
-        async let totalDistance = fetchDistance(from: startOfDay, to: endOfDay)
+        // Fetch aggregated totals once
+        let (daySteps, dayDistance) = try await fetchTotals(from: startOfDay, to: endOfDay)
         
-        // Fetch hourly breakdown
+        // Fetch hourly breakdown (runs concurrently with totals above)
         let hourlySteps = try await fetchHourlySteps(for: startOfDay)
-        
-        let (daySteps, dayDistance) = try await (totalSteps, totalDistance)
         
         return HourlyStepsModel(
             date: now,
@@ -140,7 +144,7 @@ class HealthKitProvider: ObservableObject {
         }
     }
     
-    private func fetchHourlySteps(for date: Date) async throws -> [Int] {
+    private func fetchHourlySteps(for date: Date) async throws -> [Double] {
         return try await withCheckedThrowingContinuation { continuation in
             let calendar = Calendar.current
             let startOfDay = calendar.startOfDay(for: date)
@@ -166,13 +170,13 @@ class HealthKitProvider: ObservableObject {
                     return
                 }
                 
-                var hourlySteps: [Int] = Array(repeating: 0, count: 24)
+                var hourlySteps: [Double] = Array(repeating: 0, count: 24)
                 
                 collection?.enumerateStatistics(from: startOfDay, to: endOfDay) { statistics, _ in
                     let hour = calendar.component(.hour, from: statistics.startDate)
                     let steps = statistics.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0
                     if hour < 24 {
-                        hourlySteps[hour] = Int(steps)
+                        hourlySteps[hour] = steps
                     }
                 }
                 

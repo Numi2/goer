@@ -59,7 +59,9 @@ struct HourlyStepsProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchHourlyData()
                 let entry = HourlyStepsEntry(date: Date(), data: data)
                 
-                // Update every 15 minutes – WidgetKit may throttle more frequent refreshes
+                // Update every 15 minutes.
+                // Widgets with minute-level precision are likely throttled unless implemented as Live Activities.
+                // This strikes a balance between timely stats and system resource constraints.
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
