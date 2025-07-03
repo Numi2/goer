@@ -46,7 +46,7 @@ struct HourlyStepsModel: Codable, Hashable {
     let date: Date
     let totalSteps: Int
     let totalDistance: Double // in meters
-    let hourlySteps: [Int] // 24 hour array
+    let hourlySteps: [Double] // 24-hour array of step counts
     
     var formattedTotalSteps: String {
         NumberFormatter.stepFormatter.string(from: NSNumber(value: totalSteps)) ?? "0"
@@ -57,7 +57,7 @@ struct HourlyStepsModel: Codable, Hashable {
         return measurement.formatted(.measurement(width: .abbreviated, usage: .road))
     }
     
-    var maxHourlySteps: Int {
+    var maxHourlySteps: Double {
         hourlySteps.max() ?? 1
     }
     

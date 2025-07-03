@@ -30,8 +30,8 @@ struct HourlyStepsProvider: TimelineProvider {
                 date: Date(),
                 totalSteps: 12450,
                 totalDistance: 8400,
-                hourlySteps: Array(repeating: 0, count: 24).enumerated().map { index, _ in
-                    Int.random(in: 0...800)
+                hourlySteps: Array(repeating: 0, count: 24).enumerated().map { _, _ in
+                    Double.random(in: 0...800)
                 }
             )
         )
@@ -44,8 +44,8 @@ struct HourlyStepsProvider: TimelineProvider {
                 date: Date(),
                 totalSteps: 12450,
                 totalDistance: 8400,
-                hourlySteps: Array(repeating: 0, count: 24).enumerated().map { index, _ in
-                    Int.random(in: 0...800)
+                hourlySteps: Array(repeating: 0, count: 24).enumerated().map { _, _ in
+                    Double.random(in: 0...800)
                 }
             )
         )
@@ -59,8 +59,10 @@ struct HourlyStepsProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchHourlyData()
                 let entry = HourlyStepsEntry(date: Date(), data: data)
                 
-                // Update every minute as requested
-                let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: Date()) ?? Date()
+                // Update every 15 minutes.
+                // Widgets with minute-level precision are likely throttled unless implemented as Live Activities.
+                // This strikes a balance between timely stats and system resource constraints.
+                let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
                 // Fallback entry on error
@@ -96,11 +98,11 @@ struct HourlyStepsView: View {
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.accentColor)
                     .frame(width: 28, height: 28)
                     .background(
                         Circle()
-                            .fill(.orange.opacity(0.15))
+                            .fill(Color.accentColor.opacity(0.15))
                     )
                 
                 VStack(alignment: .leading, spacing: 2) {
@@ -118,13 +120,13 @@ struct HourlyStepsView: View {
             
             // Summary stats
             HStack(spacing: 16) {
-                StatItem(
+                StatCard(
                     title: "Steps",
                     value: entry.data.formattedTotalSteps,
                     color: .blue
                 )
                 
-                StatItem(
+                StatCard(
                     title: "Distance",
                     value: entry.data.formattedTotalDistance,
                     color: .green
@@ -133,6 +135,11 @@ struct HourlyStepsView: View {
             
             // Bar chart
             HourlyBarChart(data: entry.data.hourlySteps)
+            
+            // Optional timestamp caption for clarity when WidgetKit delays updates
+            Text("Data as of \(entry.date.formatted(date: .omitted, time: .shortened))")
+                .font(.system(size: 9, weight: .medium))
+                .foregroundStyle(.tertiary)
         }
         .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
@@ -140,32 +147,13 @@ struct HourlyStepsView: View {
 }
 
 // MARK: - Stat Item Component
-private struct StatItem: View {
-    let title: String
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(title)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.secondary)
-            
-            Text(value)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
-        }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 8)
-        .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 6))
-    }
-}
+// Deprecated: replaced by shared `StatCard` (see `Shared/WidgetComponents.swift`).
 
 // MARK: - Hourly Bar Chart Component
 private struct HourlyBarChart: View {
-    let data: [Int]
+    let data: [Double]
     
-    var maxValue: Int {
+    var maxValue: Double {
         data.max() ?? 1
     }
     
@@ -185,52 +173,41 @@ private struct HourlyBarChart: View {
             
             // Time labels
             HStack {
-                Text("12A")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.tertiary)
-                
-                Spacer()
-                
-                Text("6A")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.tertiary)
-                
-                Spacer()
-                
-                Text("12P")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.tertiary)
-                
-                Spacer()
-                
-                Text("6P")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.tertiary)
-                
-                Spacer()
-                
-                Text("12A")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.tertiary)
+                ForEach([0,6,12,18,24], id: \.self) { hour in
+                    Text(Self.label(for: hour))
+                        .font(.system(size: 9, weight: .medium))
+                        .foregroundStyle(.tertiary)
+                    if hour != 24 { Spacer() }
+                }
             }
         }
+    }
+    
+    private static func label(for hour: Int) -> String {
+        let calendar = Calendar.current
+        let baseDate = calendar.startOfDay(for: Date())
+        guard let date = calendar.date(byAdding: .hour, value: hour % 24, to: baseDate) else { return "" }
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: formatter.locale) // hour format respecting 12/24h
+        return formatter.string(from: date)
     }
 }
 
 // MARK: - Bar View Component
 private struct BarView: View {
-    let value: Int
-    let maxValue: Int
+    let value: Double
+    let maxValue: Double
     let hour: Int
     
     private var normalizedHeight: CGFloat {
         guard maxValue > 0 else { return 0 }
-        return CGFloat(value) / CGFloat(maxValue)
+        return CGFloat(value / maxValue)
     }
     
     var body: some View {
         RoundedRectangle(cornerRadius: 2)
-            .fill(.orange.gradient)
+            .fill(.accentColor.gradient)
             .frame(height: max(2, normalizedHeight * 60))
             .frame(maxWidth: .infinity)
             .opacity(value > 0 ? 1.0 : 0.3)
@@ -247,7 +224,22 @@ private struct BarView: View {
             date: Date(),
             totalSteps: 12450,
             totalDistance: 8400,
-            hourlySteps: [120, 340, 156, 78, 245, 890, 1200, 1450, 987, 1123, 1890, 1567, 1234, 1678, 1345, 1890, 1456, 1234, 1567, 1123, 890, 678, 345, 123]
+            hourlySteps: [120, 340, 156, 78, 245, 890, 1200, 1450, 987, 1123, 1890, 1567, 1234, 1678, 1345, 1890, 1456, 1234, 1567, 1123, 890, 678, 345, 123].map(Double.init)
+        )
+    )
+}
+
+#Preview("Dark", as: .systemMedium) {
+    HourlyStepsWidget()
+        .environment(\.colorScheme, .dark)
+} timeline: {
+    HourlyStepsEntry(
+        date: Date(),
+        data: HourlyStepsModel(
+            date: Date(),
+            totalSteps: 12450,
+            totalDistance: 8400,
+            hourlySteps: [120, 340, 156, 78, 245, 890, 1200, 1450, 987, 1123, 1890, 1567, 1234, 1678, 1345, 1890, 1456, 1234, 1567, 1123, 890, 678, 345, 123].map(Double.init)
         )
     )
 }

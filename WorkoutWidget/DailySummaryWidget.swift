@@ -53,7 +53,9 @@ struct DailySummaryProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchDailySummary()
                 let entry = DailySummaryEntry(date: Date(), data: data)
                 
-                // Update every 15 minutes
+                // WidgetKit treats 15 min as the practical lower-bound for non-Live-Activity widgets.
+                // Updating more aggressively would be throttled and waste budget without user benefit.
+                // A 15-minute cadence gives users near-real-time feedback while respecting battery life.
                 let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
@@ -89,11 +91,11 @@ struct DailySummaryView: View {
             HStack {
                 Image(systemName: "figure.walk")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.accentColor)
                     .frame(width: 28, height: 28)
                     .background(
                         Circle()
-                            .fill(.orange.opacity(0.15))
+                            .fill(Color.accentColor.opacity(0.15))
                     )
                 
                 Text("Today")
@@ -105,14 +107,14 @@ struct DailySummaryView: View {
             
             // Metrics
             VStack(alignment: .leading, spacing: 8) {
-                MetricRow(
+                MetricDisplay(
                     icon: "figure.walk.circle.fill",
                     iconColor: .blue,
                     title: "Steps",
                     value: entry.data.formattedSteps
                 )
                 
-                MetricRow(
+                MetricDisplay(
                     icon: "location.circle.fill",
                     iconColor: .green,
                     title: "Distance",
@@ -128,6 +130,7 @@ struct DailySummaryView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
+                .accessibilityLabel(entry.data.motivationalMessage)
         }
         .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
@@ -135,34 +138,26 @@ struct DailySummaryView: View {
 }
 
 // MARK: - Metric Row Component
-private struct MetricRow: View {
-    let icon: String
-    let iconColor: Color
-    let title: String
-    let value: String
-    
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(iconColor)
-            
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.secondary)
-            
-            Spacer()
-            
-            Text(value)
-                .font(.system(size: 16, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
-        }
-    }
-}
+// Deprecated: Replaced by shared `MetricDisplay` (see `Shared/WidgetComponents.swift`).
+// Existing private struct removed to avoid duplication.
 
 // MARK: - Preview
 #Preview(as: .systemSmall) {
     DailySummaryWidget()
+} timeline: {
+    DailySummaryEntry(
+        date: Date(),
+        data: DailySummaryModel(
+            stepsToday: 8432,
+            distanceToday: 6200,
+            date: Date()
+        )
+    )
+}
+
+#Preview("Dark", as: .systemSmall) {
+    DailySummaryWidget()
+        .environment(\.colorScheme, .dark)
 } timeline: {
     DailySummaryEntry(
         date: Date(),

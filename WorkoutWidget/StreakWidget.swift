@@ -60,13 +60,15 @@ struct StreakProvider: AppIntentTimelineProvider {
         // 2. Pull cached totals on the main actor because `StreakCache` is `@MainActor`
         let totals = await MainActor.run { StreakCache.shared.totals(for: metric, back: 30) }
 
-        // 3. Evaluate the streak
-        let streak = StreakEngine.evaluate(totals: totals, threshold: threshold)
+        // 3. Evaluate the streak on a background actor to avoid blocking the timeline provider
+        let streak = await StreakEngine.shared.evaluate(totals: totals, threshold: threshold)
 
         // 4. Create entry
         let entry = StreakEntry(date: Date(), metric: metric, threshold: threshold, streak: streak)
 
-        // 5. Schedule the next update shortly after midnight
+        // 5. Schedule the next update shortly after midnight.
+        // Streak only changes once per day at rollover, so we align refresh ~5 minutes after midnight
+        // to ensure HealthKit has written the previous day's data.
         var nextUpdate: Date
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) {
             nextUpdate = Calendar.current.startOfDay(for: tomorrow)
@@ -144,6 +146,13 @@ struct StreakView: View {
 
 #Preview(as: .systemSmall) {
     StreakWidget()
+} timeline: {
+    StreakEntry(date: .init(), metric: .steps, threshold: 10_000, streak: 5)
+}
+
+#Preview("Dark", as: .systemSmall) {
+    StreakWidget()
+        .environment(\.colorScheme, .dark)
 } timeline: {
     StreakEntry(date: .init(), metric: .steps, threshold: 10_000, streak: 5)
 }

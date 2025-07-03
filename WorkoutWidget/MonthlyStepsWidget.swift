@@ -60,7 +60,8 @@ struct MonthlyStepsProvider: TimelineProvider {
                 let data = try await HealthKitProvider.shared.fetchMonthlyData()
                 let entry = MonthlyStepsEntry(date: Date(), data: data)
                 
-                // Update every hour as requested
+                // Update every hour.
+                // Monthly progress changes less frequently; hourly refresh keeps data fresh without wasting the 4-hour default budget.
                 let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date()
                 timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
             } catch {
@@ -148,7 +149,7 @@ struct MonthlyStepsView: View {
             }
             
             // Monthly bar chart
-            MonthlyBarChart(data: entry.data.dailySteps)
+            MonthlyBarChart(data: entry.data.dailySteps, daysInMonth: entry.data.daysInMonth)
         }
         .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
@@ -158,9 +159,12 @@ struct MonthlyStepsView: View {
 // MARK: - Monthly Bar Chart Component
 private struct MonthlyBarChart: View {
     let data: [Int]
+    let daysInMonth: Int
+    
+    private let stepGoal = 8_000
     
     var maxValue: Int {
-        data.max() ?? 1
+        data.prefix(daysInMonth).max() ?? 1
     }
     
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 7)
@@ -169,22 +173,22 @@ private struct MonthlyBarChart: View {
         VStack(alignment: .leading, spacing: 4) {
             // Chart
             LazyVGrid(columns: columns, spacing: 1) {
-                ForEach(0..<min(data.count, 31), id: \.self) { day in
+                ForEach(0..<daysInMonth, id: \.self) { day in
                     MonthlyBarView(
                         value: data[day],
                         maxValue: maxValue,
-                        day: day + 1
+                        day: day + 1,
+                        stepGoal: stepGoal
                     )
                 }
             }
             .frame(height: 80)
             
             // Legend
-            HStack(spacing: 16) {
-                LegendItem(color: .green, label: "8,000+ steps")
-                LegendItem(color: .orange, label: "< 8,000 steps")
-                Spacer()
-            }
+            ChartLegend(items: [
+                ChartLegend.LegendItem(color: .green, label: "\(stepGoal.formatted())+ steps"),
+                ChartLegend.LegendItem(color: .orange, label: "< \(stepGoal.formatted()) steps")
+            ])
         }
     }
 }
@@ -194,6 +198,7 @@ private struct MonthlyBarView: View {
     let value: Int
     let maxValue: Int
     let day: Int
+    let stepGoal: Int
     
     private var normalizedHeight: CGFloat {
         guard maxValue > 0 else { return 0 }
@@ -201,7 +206,7 @@ private struct MonthlyBarView: View {
     }
     
     private var barColor: Color {
-        value >= 8000 ? .green : .orange
+        value >= stepGoal ? .green : .orange
     }
     
     var body: some View {
@@ -210,6 +215,7 @@ private struct MonthlyBarView: View {
                 .fill(barColor.gradient)
                 .frame(height: max(2, normalizedHeight * 60))
                 .opacity(value > 0 ? 1.0 : 0.3)
+                .accessibilityLabel("Day \(day): \(value.formatted()) steps")
             
             Text("\(day)")
                 .font(.system(size: 8, weight: .medium))
@@ -219,27 +225,24 @@ private struct MonthlyBarView: View {
     }
 }
 
-// MARK: - Legend Item Component
-private struct LegendItem: View {
-    let color: Color
-    let label: String
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Circle()
-                .fill(color)
-                .frame(width: 6, height: 6)
-            
-            Text(label)
-                .font(.system(size: 9, weight: .medium))
-                .foregroundStyle(.secondary)
-        }
-    }
-}
-
 // MARK: - Preview
 #Preview(as: .systemMedium) {
     MonthlyStepsWidget()
+} timeline: {
+    MonthlyStepsEntry(
+        date: Date(),
+        data: MonthlyStepsModel(
+            month: Date(),
+            totalSteps: 245678,
+            totalDistance: 185400,
+            dailySteps: [12000, 8500, 6200, 9100, 11300, 7800, 13400, 9800, 10200, 8900, 7500, 12100, 9400, 8700, 10800, 9200, 8100, 11700, 9900, 8300, 7900, 10500, 9600, 8800, 11200, 9000, 8400, 10700, 9300, 8600, 7200]
+        )
+    )
+}
+
+#Preview("Dark", as: .systemMedium) {
+    MonthlyStepsWidget()
+        .environment(\.colorScheme, .dark)
 } timeline: {
     MonthlyStepsEntry(
         date: Date(),
