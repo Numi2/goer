@@ -148,7 +148,7 @@ struct MonthlyStepsView: View {
             }
             
             // Monthly bar chart
-            MonthlyBarChart(data: entry.data.dailySteps)
+            MonthlyBarChart(data: entry.data.dailySteps, daysInMonth: entry.data.daysInMonth)
         }
         .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
@@ -158,9 +158,12 @@ struct MonthlyStepsView: View {
 // MARK: - Monthly Bar Chart Component
 private struct MonthlyBarChart: View {
     let data: [Int]
+    let daysInMonth: Int
+    
+    private let stepGoal = 8_000
     
     var maxValue: Int {
-        data.max() ?? 1
+        data.prefix(daysInMonth).max() ?? 1
     }
     
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 7)
@@ -169,11 +172,12 @@ private struct MonthlyBarChart: View {
         VStack(alignment: .leading, spacing: 4) {
             // Chart
             LazyVGrid(columns: columns, spacing: 1) {
-                ForEach(0..<min(data.count, 31), id: \.self) { day in
+                ForEach(0..<daysInMonth, id: \.self) { day in
                     MonthlyBarView(
                         value: data[day],
                         maxValue: maxValue,
-                        day: day + 1
+                        day: day + 1,
+                        stepGoal: stepGoal
                     )
                 }
             }
@@ -181,8 +185,8 @@ private struct MonthlyBarChart: View {
             
             // Legend
             HStack(spacing: 16) {
-                LegendItem(color: .green, label: "8,000+ steps")
-                LegendItem(color: .orange, label: "< 8,000 steps")
+                LegendItem(color: .green, label: "\(stepGoal.formatted())+ steps")
+                LegendItem(color: .orange, label: "< \(stepGoal.formatted()) steps")
                 Spacer()
             }
         }
@@ -194,6 +198,7 @@ private struct MonthlyBarView: View {
     let value: Int
     let maxValue: Int
     let day: Int
+    let stepGoal: Int
     
     private var normalizedHeight: CGFloat {
         guard maxValue > 0 else { return 0 }
@@ -201,7 +206,7 @@ private struct MonthlyBarView: View {
     }
     
     private var barColor: Color {
-        value >= 8000 ? .green : .orange
+        value >= stepGoal ? .green : .orange
     }
     
     var body: some View {
@@ -210,6 +215,7 @@ private struct MonthlyBarView: View {
                 .fill(barColor.gradient)
                 .frame(height: max(2, normalizedHeight * 60))
                 .opacity(value > 0 ? 1.0 : 0.3)
+                .accessibilityLabel("Day \(day): \(value.formatted()) steps")
             
             Text("\(day)")
                 .font(.system(size: 8, weight: .medium))

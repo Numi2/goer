@@ -1,17 +1,17 @@
-- [ ] DailySummaryWidget: Replace `MetricRow` with shared `MetricDisplay` component
-- [ ] DailySummaryWidget: Move hard-coded orange accent colour to semantic colour asset
-- [ ] DailySummaryWidget: Add `.accessibilityLabel` to motivational message
+- [x] DailySummaryWidget: Replace `MetricRow` with shared `MetricDisplay` component
+- [x] DailySummaryWidget: Move hard-coded orange accent colour to semantic colour asset
+- [x] DailySummaryWidget: Add `.accessibilityLabel` to motivational message
 
-- [ ] HourlyStepsWidget: Reconsider 1-minute refresh; document WidgetKit throttling or relax to 15 minutes
-- [ ] HourlyStepsWidget: Change `hourlySteps` values to `Double` for future metrics
-- [ ] HourlyStepsWidget: Generate time-axis labels with `DateFormatter` respecting locale
-- [ ] HourlyStepsWidget: (Optional) Add "data as of…" caption if real-time accuracy is important
+- [x] HourlyStepsWidget: Reconsider 1-minute refresh; document WidgetKit throttling or relax to 15 minutes
+- [x] HourlyStepsWidget: Change `hourlySteps` values to `Double` for future metrics
+- [x] HourlyStepsWidget: Generate time-axis labels with `DateFormatter` respecting locale
+- [x] HourlyStepsWidget: (Optional) Add "data as of…" caption if real-time accuracy is important
 
-- [ ] MonthlyStepsWidget: Use `daysInMonth` to iterate, avoiding unused views in shorter months
-- [ ] MonthlyStepsWidget: Extract goal-day threshold (8 000 steps) to constant or user setting
-- [ ] MonthlyStepsWidget: Add accessibility labels for each day's bar (e.g. "Day 3: 6 200 steps")
+- [x] MonthlyStepsWidget: Use `daysInMonth` to iterate, avoiding unused views in shorter months
+- [x] MonthlyStepsWidget: Extract goal-day threshold (8 000 steps) to constant or user setting
+- [x] MonthlyStepsWidget: Add accessibility labels for each day's bar (e.g. "Day 3: 6 200 steps")
 
-- [ ] StreakWidget: Convert `Metric` to `enum Metric: String, CaseIterable` and sync with AppIntent options
+- [x] StreakWidget: Convert `Metric` to `enum Metric: String, CaseIterable` and sync with AppIntent options
 - [ ] StreakWidget: Off-load heavy streak evaluation to background actor when metrics expand
 
 ### Cross-cutting / Shared Infrastructure
